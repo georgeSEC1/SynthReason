@@ -38,11 +38,11 @@ def gather(user,file):
     with open(file, encoding='ISO-8859-1') as f:
         text = f.read()
     output = ""
-    words = convert(process(user,targetNgramSize))
+    words = convert(user)
     sentences = text.split(token)
     for sentence in sentences:
         for word in words:
-            if sentence.find(" " + word + " ") > -1 and text.count(word) <sentence.find(" " + word + " "):
+            if sentence.find(" " + word + " ") > -1:
                 output += sentence + token
     return output 
 def process(text,iota):
@@ -53,8 +53,7 @@ def process(text,iota):
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
-                if text.count(proc) < partition:
-                    sync += proc + " "
+                sync += proc + " "
         return sync + " "
     return text
 with open("fileList.conf", encoding='ISO-8859-1') as f:
