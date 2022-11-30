@@ -41,7 +41,7 @@ def gather(user,file):
     sentences = text.split(token)
     for sentence in sentences:
         for word in words:
-            if sentence.find(" " + word + " ") > -1:
+            if sentence.find(" " + word + " ") > -1 and text.count(word) <sentence.find(" " + word + " "):
                 output += sentence + token
     return output 
 def process(text,iota):
@@ -52,7 +52,8 @@ def process(text,iota):
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
-                sync += proc + " "
+                if text.count(proc) < partition:
+                    sync += proc + " "
         return sync + " "
     return text
 with open("fileList.conf", encoding='ISO-8859-1') as f:
