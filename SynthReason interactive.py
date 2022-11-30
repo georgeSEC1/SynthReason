@@ -28,7 +28,7 @@ import random
 import re
 import numpy as np
 partition = 32
-recursion = 320000
+recursion = 320
 targetNgramSize = 3
 token = "."
 def convert(lst):
@@ -69,7 +69,7 @@ while(True):
     for file in files:
         selection = []
         sync = gather(user,file.strip())
-        for n in range(recursion):
+        for n in reversed(range(recursion)):
             if n >= targetNgramSize:
                 sync = process(sync,n)
         if len(convert(sync)) >= partition:                  
