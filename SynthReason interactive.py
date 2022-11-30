@@ -27,6 +27,7 @@
 import random
 import re
 import numpy as np
+import math
 partition = 32
 recursion = 320
 targetNgramSize = 3
@@ -70,8 +71,9 @@ while(True):
         selection = []
         sync = gather(user,file.strip())
         for n in reversed(range(recursion)):
-            if n >= targetNgramSize:
-                sync = process(sync,n)
+            if n > 0:
+                if round(ord(sync[n])/n) >= targetNgramSize:
+                    sync = process(sync,round(ord(sync[n])/n))
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
