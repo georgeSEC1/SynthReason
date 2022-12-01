@@ -69,10 +69,12 @@ while(True):
     for file in files:
         selection = []
         sync = gather(user,file.strip())
-        for n in reversed(range(recursion)):
-            if n > 0:
-                if round(ord(sync[n])/n) >= targetNgramSize:
-                    sync = process(sync,round(ord(sync[n])/n))
+        for m in range(recursion):
+            if m > 0:
+                for n in reversed(range(recursion)):
+                    if n > 0:
+                        if round(ord(sync[n])/m) >= targetNgramSize:
+                            sync = process(sync,round(ord(sync[n])/m))
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
