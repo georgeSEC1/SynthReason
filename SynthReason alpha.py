@@ -50,6 +50,8 @@ def process(text,iota):
         sentences = np.array(sentences)
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
         sync = ""
+        np.sort(sentences, axis=1)
+        np.sort(sentences, axis=0)
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
                 sync += proc + " "
