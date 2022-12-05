@@ -57,6 +57,12 @@ def process(text,iota):
                 sync += proc + " "
         return sync + " "
     return text
+def getSentence(sync):
+    sentences = sync.split(".")
+    try:
+        return '.'.join(sentences[:-1]) + "."
+    except:
+        return sync
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -80,14 +86,14 @@ for question in questions:
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
-            print("AI:" ,sync)
+            print("AI:" ,getSentence(sync))
             print()
             print()
             f = open(filename, "a", encoding="utf8")
             f.write("\n")
             f.write("using " + file.strip() + " answering: " + user)
             f.write("\n")
-            f.write(sync)
+            f.write(getSentence(sync))
             f.write("\n")
             f.close()
             if len(convert(sync)) >= 0:
