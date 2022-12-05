@@ -30,7 +30,7 @@ import numpy as np
 partition = 32
 recursion = 320
 targetNgramSize = 3
-token = "."
+token = " a "
 def convert(lst):
     return (lst.split())
 def gather(user,file):
