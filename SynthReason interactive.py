@@ -78,7 +78,7 @@ while(True):
         selection = []
         sync = gather(user,file.strip())
         for m in reversed(range(recursion)):
-            for n in reversed(range(recursion)):
+            for n in range(recursion):
                 try:
                     if round(ord(sync[n])/(m+1)) >= targetNgramSize:
                         sync = process(sync,round(ord(sync[n])/(m+1)))
