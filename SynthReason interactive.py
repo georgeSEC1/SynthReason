@@ -39,6 +39,7 @@ def gather(user,file):
     output = ""
     words = convert(user)
     sentences = text.split(token)
+    random.shuffle(sentences)
     for sentence in sentences:
         for word in words:
             if sentence.find(" " + word + " ") > -1:
@@ -50,8 +51,8 @@ def process(text,iota):
         sentences = np.array(sentences)
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
         sync = ""
-        np.sort(sentences, axis=1)
         np.sort(sentences, axis=0)
+        np.sort(sentences, axis=1)
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
                 sync += proc + " "
