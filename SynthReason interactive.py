@@ -27,7 +27,6 @@
 import random
 import re
 import numpy as np
-import math
 partition = 8
 recursion = 16
 targetNgramSize = 3
