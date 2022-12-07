@@ -80,8 +80,8 @@ while(True):
         for m in reversed(range(recursion)):
             for n in reversed(range(recursion)):
                 try:
-                    if round(ord(sync[n])/(m-n)) % ord(sync[m])>= targetNgramSize:
-                        sync = process(sync,round(ord(sync[n])/(m-n)) % ord(sync[m]))
+                    if round(ord(sync[n])/(len(user)/ len(sync)) % ord(sync[m])) >= targetNgramSize:
+                        sync = process(sync,round(ord(sync[n])/(len(user)/ len(sync))) % ord(sync[m]))
                 except:
                     False
         if len(convert(sync)) >= partition:                  
