@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - intelligent symbolic manipulation system
+# SynthReason - Synthetic Dawn - discovery
 # BSD 2-Clause License
 # 
 # Copyright (c) 2022, GeorgeSEC1 - George Wagenknecht
