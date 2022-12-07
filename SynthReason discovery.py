@@ -81,8 +81,6 @@ var.append("ord(sync[n])")
 var.append("ord(sync[m])")
 var.append("(")
 var.append(")")
-
-var.append("sync")
 while(True):
     for question in questions:
         user = re.sub('\W+',' ',question)
