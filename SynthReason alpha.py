@@ -28,10 +28,10 @@ import random
 import re
 import numpy as np
 import math
-partition = 32
-recursion = 320
+partition = 8
+recursion = 16
 targetNgramSize = 3
-token = " the "
+token = " is "
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -48,9 +48,9 @@ def gather(user,file):
     return output 
 def process(text,iota):
     sentences = convert(text)
-    if len(convert(text)) > partition*(targetNgramSize*iota):
+    if len(convert(text)) >= (partition*iota)*(targetNgramSize*iota):
         sentences = np.array(sentences)
-        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
+        sentences = sentences[:(partition*iota)*(targetNgramSize*iota)].reshape(partition*iota, targetNgramSize*iota)
         sync = ""
         np.sort(sentences, axis=1)
         np.sort(sentences, axis=0)
@@ -79,10 +79,10 @@ for question in questions:
         selection = []
         sync = gather(user,file.strip())
         for m in reversed(range(recursion)):
-            for n in range(recursion):
+            for n in reversed(range(recursion)):
                 try:
-                    if round(ord(sync[n])/(m+1)) % ord(sync[m])>= targetNgramSize:
-                        sync = process(sync,round(ord(sync[n])/(m+1)) % ord(sync[m]))
+                    if round(ord(sync[n])/(m-n)) % ord(sync[m])>= targetNgramSize:
+                        sync = process(sync,round(ord(sync[n])/(m-n)) % ord(sync[m]))
                 except:
                     False
         if len(convert(sync)) >= partition:                  
