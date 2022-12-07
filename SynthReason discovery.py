@@ -114,10 +114,10 @@ while(True):
                 stat = 0
                 for i in range(partition):
                     checkX = ""
+                    for cycle in range(targetNgramSize-1):
+                        checkX += check[checkVar+cycle] + " "
                     if text.find(checkX) > -1:
                         stat += 1
-                for cycle in range(targetNgramSize):
-                    checkX += check[checkVar+cycle] + " "
                 if len(convert(sync)) >= partition and success == True and stat > partition/4:                  
                     print()
                     print("using " , equation,  "in" , file.strip() ," answering: " , user)
