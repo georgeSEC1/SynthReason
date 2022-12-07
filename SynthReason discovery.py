@@ -85,7 +85,7 @@ while(True):
     for question in questions:
         user = re.sub('\W+',' ',question)
         random.shuffle(files)
-        length = random.randint(5,25)
+        length = random.randint(5,15)
         equation = ""
         for i in range(length):
             equation += var[random.randint(0,len(var)-1)]
@@ -110,10 +110,11 @@ while(True):
                 if Exit == True:
                     break
                 check = convert(sync)
-                checkVar = random.randint(0,len(check)-1)
                 stat = 0
                 for i in range(partition):
+                    checkVar = random.randint(0,len(check)-1)
                     checkX = ""
+                    checkY = ""
                     for cycle in range(targetNgramSize-1):
                         checkX += check[checkVar+cycle] + " "
                     if text.find(checkX) > -1:
