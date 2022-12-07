@@ -27,7 +27,7 @@
 import random
 import re
 import numpy as np
-partition = 32
+partition = 64
 recursion = 320
 targetNgramSize = 3
 token = " the "
