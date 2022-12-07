@@ -85,22 +85,23 @@ while(True):
     for question in questions:
         user = re.sub('\W+',' ',question)
         random.shuffle(files)
-        length = random.randint(5,30)
-        #round(ord(sync[n])/(m+1))
+        length = random.randint(5,25)
         equation = ""
         for i in range(length):
             equation += var[random.randint(0,len(var)-1)]
-        Exit = False
-        success = False
+        #equation = "round(ord(sync[n])/(m+1))"
         try:
-            test = eval(equation)  
+            print("Trying: ", equation)
+            Exit = False
+            success = False
             for file in files:
                 selection = []
-                with open(file.strip()) as f:
+                with open(file.strip(), encoding='ISO-8859-1') as f:
                     text = f.read()
                 sync = gather(user,file.strip())
                 for m in reversed(range(recursion)):
                     for n in range(recursion):
+                        test = eval(equation)  
                         if test >= targetNgramSize:
                             sync = process(sync,test)
                             success = True
@@ -110,17 +111,22 @@ while(True):
                     break
                 check = convert(sync)
                 checkVar = random.randint(0,len(check)-1)
+                stat = 0
+                for i in range(partition):
+                    checkX = ""
+                    if text.find(checkX) > -1:
+                        stat += 1
                 for cycle in range(targetNgramSize):
                     checkX += check[checkVar+cycle] + " "
-                if len(convert(sync)) >= partition and success == True and text.find(checkX) == -1:                  
+                if len(convert(sync)) >= partition and success == True and stat > partition/4:                  
                     print()
-                    print("using " , file.strip() , equation,  " answering: " , user)
+                    print("using " , equation,  "in" , file.strip() ," answering: " , user)
                     print("AI:" ,getSentence(sync))
                     print()
                     print()
                     f = open(filename, "a", encoding="utf8")
                     f.write("\n")
-                    f.write("using " + file.strip() + " " + equation + " answering: " + user)
+                    f.write("using " + equation+ " in " + file.strip() +" answering: " + user)
                     f.write("\n")
                     f.write(getSentence(sync))
                     f.write("\n")
