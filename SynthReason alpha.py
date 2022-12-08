@@ -77,7 +77,7 @@ for question in questions:
         selection = []
         sync = gather(user,file.strip())
         for m in reversed(range(recursion)):
-            for n in range(recursion):
+            for n in range(ord(sync[m])):
                 try:
                     if round(ord(sync[n])/(m+1)) >= targetNgramSize:
                         sync = process(sync,round(ord(sync[n])/(m+1)))
