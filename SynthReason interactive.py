@@ -77,10 +77,11 @@ while(True):
         selection = []
         sync = gather(user,file.strip())
         for m in reversed(range(recursion)):
-            for n in range(ord(sync[m])):
+            for n in reversed(range(recursion)):
                 try:
-                    if round(ord(sync[n])/sync.find(sync[n],n+1)) >= targetNgramSize:
-                        sync = process(sync,round(ord(sync[n])/sync.find(sync[n],n+1)))
+                    stat = (((m+n)/(m+n+ord(sync[n])+ord(sync[m])))*((m+ord(sync[n]))/((m+n+ord(sync[n])+ord(sync[m])))*100))
+                    if round(ord(sync[n])/stat+1) > targetNgramSize:
+                        sync = process(sync,round(ord(sync[n])/stat+1))
                 except:
                     False
         if len(convert(sync)) >= partition:                  
