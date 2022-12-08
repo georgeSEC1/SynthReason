@@ -79,8 +79,8 @@ for question in questions:
         for m in reversed(range(recursion)):
             for n in range(ord(sync[m])):
                 try:
-                    if round(ord(sync[n])/(m+1)) >= targetNgramSize:
-                        sync = process(sync,round(ord(sync[n])/(m+1)))
+                    if round(ord(sync[n])/sync.find(sync[n],n+1)) >= targetNgramSize:
+                        sync = process(sync,round(ord(sync[n])/sync.find(sync[n],n+1)))
                 except:
                     False
         if len(convert(sync)) >= partition:                  
