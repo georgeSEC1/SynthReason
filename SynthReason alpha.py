@@ -39,6 +39,7 @@ def gather(user,file):
     output = ""
     words = convert(user)
     sentences = text.split(token)
+    random.shuffle(sentences)
     for sentence in sentences:
         for word in words:
             if sentence.find(" " + word + " ") > -1:
