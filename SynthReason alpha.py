@@ -39,7 +39,6 @@ def gather(user,file):
     output = ""
     words = convert(user)
     sentences = text.split(token)
-    random.shuffle(sentences)
     for sentence in sentences:
         for word in words:
             if sentence.find(" " + word + " ") > -1:
@@ -48,7 +47,8 @@ def gather(user,file):
 def process(text,iota):
     sentences = convert(text)
     if len(convert(text)) > partition*(targetNgramSize*iota):
-        sentences = np.array(sentences)
+        chunkPos = random.randint(0,len(sentences)-(partition*(targetNgramSize*iota)))
+        sentences = np.array(sentences[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
         sync = ""
         np.sort(sentences, axis=1)
