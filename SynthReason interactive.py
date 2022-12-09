@@ -30,7 +30,7 @@ import numpy as np
 partition = 32
 recursion = 320
 targetNgramSize = 3
-token = " the "
+token = " is the "
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -80,9 +80,8 @@ while(True):
         for m in reversed(range(recursion)):
             for n in reversed(range(recursion)):
                 try:
-                    stat = (((m+n)/(m+n+ord(sync[n])+ord(sync[m])))*((m+ord(sync[n]))/((m+n+ord(sync[n])+ord(sync[m])))*100))
-                    if round(ord(sync[n])/stat+1) > targetNgramSize:
-                        sync = process(sync,round(ord(sync[n])/stat+1))
+                    if round(ord(sync[n])/m+1) > targetNgramSize:
+                        sync = process(sync,round(ord(sync[n])/m+1))
                 except:
                     False
         if len(convert(sync)) >= partition:                  
