@@ -41,7 +41,7 @@ def gather(user,file):
     sentences = text.split(token)
     for sentence in sentences:
         for word in words:
-            if sentence.find(" " + word + " ") > -1:
+            if sentence.find(" " + word + " ") > -1 and sentence.find(",")*2 > text.find(" " + word + " "):
                 output += sentence + token
     return output 
 def process(text,iota):
@@ -50,9 +50,8 @@ def process(text,iota):
         chunkPos = random.randint(0,len(sentences)-(partition*(targetNgramSize*iota)))
         sentences = np.array(sentences[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
+        #sentences = shuffle_along_axis(sentences, 0)
         sync = ""
-        np.sort(sentences, axis=1)
-        np.sort(sentences, axis=0)
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
                 sync += proc + " "
@@ -64,6 +63,9 @@ def getSentence(sync):
         return '.'.join(sentences[:-1]) + "."
     except:
         return sync
+def shuffle_along_axis(a, axis):
+    idx = np.random.rand(*a.shape).argsort(axis=axis)
+    return np.take_along_axis(a,idx,axis=axis)
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -77,7 +79,7 @@ while(True):
     for file in files:
         selection = []
         sync = gather(user,file.strip())
-        for m in reversed(range(recursion)):
+        for m in range(recursion):
             for n in reversed(range(recursion)):
                 try:
                     if round(ord(sync[n])/m+1) > targetNgramSize:
