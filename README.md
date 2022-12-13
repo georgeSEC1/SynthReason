@@ -5,7 +5,7 @@ The only problem with n-gram based stochastic NLP generators is the removal of i
 
 In current usage, there are multiple and sometimes conflicting definitions for zeugma and syllepsis.[4] This article categorizes these two figures of speech into four types, based on four definitions:
 
-Type 1
+Type 1:
 Grammatical syllepsis (sometimes also called zeugma): where a single word is used in relation to two other parts of a sentence although the word grammatically or logically applies to only one.[2][5]
 
 By definition, grammatical syllepsis will often be grammatically "incorrect" according to traditional grammatical rules. However, such solecisms are sometimes not errors but intentional constructions in which the rules of grammar are bent by necessity or for stylistic effect.
@@ -21,7 +21,7 @@ Sometimes the "error" is logical, rather than grammatical:
 "When the people saw the thunder and lightning and heard the trumpet and saw the mountain in smoke, they trembled with fear. (Exodus 20:18a)"[5]
 Logically, they "saw" only the lightning.
 
-Type 2
+Type 2:
 Zeugma (often also called syllepsis, or semantic syllepsis): a single word is used with two other parts of a sentence but must be understood differently in relation to each.[6][7][8][9] Example: "He took his hat and his leave." The type of figure is grammatically correct but creates its effect by seeming, at first hearing, to be incorrect by its exploiting multiple shades of meaning in a single word or phrase.
 
 "Here Thou, great Anna! whom three Realms obey,
@@ -39,7 +39,7 @@ When the meaning of a verb varies for the nouns following it, there is a standar
 "The boy swallowed milk and kisses," as contrasted with "The boy swallowed kisses and milk".[16]
 The opposite process, in which the first noun expresses a figurative meaning and the second a more literal meaning, tends to create a comic effect: "and she feeds me love and tenderness and macaroons." (The Stampeders, "Sweet City Woman")
 
-Type 3
+Type 3:
 The Oxford Dictionary of Literary Terms offers a much broader definition for zeugma by defining it as any case of parallelism and ellipsis working together so that a single word governs two or more other parts of a sentence.[17]
 
 Vicit pudorem libido timorem audacia rationem amentia. (Cicero, Pro Cluentio, VI.15)
@@ -51,5 +51,5 @@ The more usual way of phrasing this would be "Histories make men wise, make poet
 
 Zeugmas are defined in this sense in Samuel Johnson's 18th-century A Dictionary of the English Language.[19]
 
-Type 4
+Type 4:
 A special case of semantic syllepsis occurs when a word or phrase is used both in its figurative and literal sense at the same time.[3] Then, it is not necessary for the governing phrase to relate to two other parts of the sentence. One example, from the song "What's My Name?", is: "Okay, there we go / Only thing we have on is the radio." Another example is in an advertisement for a transport company: "We go a long way for you." This type of syllepsis operates in a similar manner to a homonymic pun.
