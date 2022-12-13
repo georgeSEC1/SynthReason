@@ -30,7 +30,11 @@ import numpy as np
 partition = 32
 recursion = 320
 targetNgramSize = 3
-token = " is the "
+token = " is "
+tokenX = "."
+tokenY = " of "
+tokenZ = " and "
+mod = 0.7
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -41,20 +45,21 @@ def gather(user,file):
     sentences = text.split(token)
     for sentence in sentences:
         for word in words:
-            if sentence.find(" " + word + " ") > -1 and sentence.find(",")*2 > text.find(" " + word + " "):
+            if sentence.find(" " + word + " ") > -1:
                 output += sentence + token
     return output 
 def process(text,iota):
-    sentences = convert(text)
+    data = convert(text)
     if len(convert(text)) > partition*(targetNgramSize*iota):
-        chunkPos = random.randint(0,len(sentences)-(partition*(targetNgramSize*iota)))
-        sentences = np.array(sentences[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
+        chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
+        sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
         #sentences = shuffle_along_axis(sentences, 0)
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
-            for proc in sentence:
-                sync += proc + " "
+            if ' '.join(sentence).find(tokenX)+ ' '.join(sentence).find(tokenY) >' '.join(sentence).find(tokenZ)*mod:
+                for proc in sentence:
+                    sync += proc + " "
         return sync + " "
     return text
 def getSentence(sync):
