@@ -61,7 +61,6 @@ def process(text,iota):
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize*iota,partition)
-        #sentences = shuffle_along_axis(sentences, 0)
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
@@ -74,9 +73,6 @@ def getSentence(sync):
         return '.'.join(sentences[:-1]) + "."
     except:
         return sync
-def shuffle_along_axis(a, axis):
-    idx = np.random.rand(*a.shape).argsort(axis=axis)
-    return np.take_along_axis(a,idx,axis=axis)
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
