@@ -28,10 +28,10 @@ import random
 import re
 import numpy as np
 partition = 32
-recursion = 320
+recursion = 32
 targetNgramSize = 3
 token = "."
-mod = 5
+mod = 50
 def convert(lst):
     return (lst.split())
 def gather(user,file):
