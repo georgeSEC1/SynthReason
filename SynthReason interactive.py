@@ -30,11 +30,11 @@ import numpy as np
 partition = 32
 recursion = 320
 targetNgramSize = 3
-token = " is "
-tokenX = "."
-tokenY = " of "
+token = "."
+tokenX = " of "
+tokenY = " is "
 tokenZ = " and "
-mod = 0.7
+mod = 1.17
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -53,13 +53,12 @@ def process(text,iota):
     if len(convert(text)) > partition*(targetNgramSize*iota):
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
-        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
+        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize*iota,partition)
         #sentences = shuffle_along_axis(sentences, 0)
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
-            if ' '.join(sentence).find(tokenX)+ ' '.join(sentence).find(tokenY) >' '.join(sentence).find(tokenZ)*mod:
-                for proc in sentence:
-                    sync += proc + " "
+            for proc in sentence:
+                sync += proc + " "
         return sync + " "
     return text
 def getSentence(sync):
@@ -86,11 +85,12 @@ while(True):
         sync = gather(user,file.strip())
         for m in range(recursion):
             for n in reversed(range(recursion)):
-                try:
-                    if round(ord(sync[n])/m+1) > targetNgramSize:
-                        sync = process(sync,round(ord(sync[n])/m+1))
-                except:
-                    False
+                if sync.find(sync[n],sync.find(sync[m]))*mod > ord(sync[n]):
+                    try:
+                        if round(ord(sync[n])/m+1) > targetNgramSize:
+                            sync = process(sync,round(ord(sync[n])/m+1))
+                    except:
+                        False
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
