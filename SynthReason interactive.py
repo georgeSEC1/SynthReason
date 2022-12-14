@@ -31,10 +31,7 @@ partition = 32
 recursion = 320
 targetNgramSize = 3
 token = "."
-tokenX = " of "
-tokenY = " is "
-tokenZ = " and "
-mod = 1.17
+mod = 5
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -50,7 +47,17 @@ def gather(user,file):
     return output 
 def process(text,iota):
     data = convert(text)
-    if len(convert(text)) > partition*(targetNgramSize*iota):
+    if len(convert(text)) > partition*(targetNgramSize*iota) and iota < mod:
+        chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
+        sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
+        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize,partition*iota)
+        #sentences = shuffle_along_axis(sentences, 0)
+        sync = ""
+        for sentence in list(set(map(tuple,sentences))):
+            for proc in sentence:
+                sync += proc + " "
+        return sync + " "
+    if len(convert(text)) > partition*(targetNgramSize*iota) and iota >= mod:
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize*iota,partition)
