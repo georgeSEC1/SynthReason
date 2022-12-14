@@ -51,7 +51,6 @@ def process(text,iota):
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize,partition*iota)
-        #sentences = shuffle_along_axis(sentences, 0)
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
