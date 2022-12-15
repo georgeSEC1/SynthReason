@@ -32,7 +32,8 @@ partition = 32
 recursion = 32
 targetNgramSize = 3
 token = "."
-mod = 4
+mod = 5
+file = ""
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -46,8 +47,20 @@ def gather(user,file):
             if sentence.find(" " + word + " ") > -1:
                 output += sentence + token
     return output 
-def compare(x, y):
-    return x ** 3 + y ** 3
+def compare(pair1, pair2):
+    with open(file.strip(), encoding='ISO-8859-1') as f:
+        text = f.read()
+    number1, word1 = pair1
+    number2, word2 = pair2
+    if number1 == number2:
+        if text.count(y) > text.find(x):
+            return -1
+        else:
+            return 1
+    if text.find(y) < len(x):
+        return -1
+    else:
+        return 1
 def process(text,iota):
     data = convert(text)
     if len(convert(text)) >= partition*(targetNgramSize*iota) and iota < mod:
@@ -56,6 +69,7 @@ def process(text,iota):
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize,partition*iota)
         sync = ""
         sentences = sorted(sentences, key=functools.cmp_to_key(compare))
+
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
                 sync += proc + " "
