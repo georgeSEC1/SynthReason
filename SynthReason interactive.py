@@ -27,11 +27,12 @@
 import random
 import re
 import numpy as np
+import functools
 partition = 32
 recursion = 32
 targetNgramSize = 3
 token = "."
-mod = 50
+mod = 4
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -45,18 +46,21 @@ def gather(user,file):
             if sentence.find(" " + word + " ") > -1:
                 output += sentence + token
     return output 
+def compare(x, y):
+    return x ** 3 + y ** 3
 def process(text,iota):
     data = convert(text)
-    if len(convert(text)) > partition*(targetNgramSize*iota) and iota < mod:
+    if len(convert(text)) >= partition*(targetNgramSize*iota) and iota < mod:
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize,partition*iota)
         sync = ""
+        sentences = sorted(sentences, key=functools.cmp_to_key(compare))
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
                 sync += proc + " "
         return sync + " "
-    if len(convert(text)) > partition*(targetNgramSize*iota) and iota >= mod:
+    if len(convert(text)) >= partition*(targetNgramSize*iota) and iota >= mod:
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
         sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize*iota,partition)
