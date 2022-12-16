@@ -47,40 +47,22 @@ def gather(user,file):
             if sentence.find(" " + word + " ") > -1:
                 output += sentence + token
     return output 
-def compare(pair1, pair2):
-    with open(file.strip(), encoding='ISO-8859-1') as f:
-        text = f.read()
-    number1, word1 = pair1
-    number2, word2 = pair2
-    if number1 == number2:
-        if text.count(y) > text.find(x):
-            return -1
-        else:
-            return 1
-    if text.find(y) < len(x):
+def mycmp(a, b):
+    if sum(list(map(ord,b)), len(a)) > sum(list(map(ord,a))):
+        return 1
+    elif sum(list(map(ord,b)), len(a)) < sum(list(map(ord,a))):
         return -1
     else:
-        return 1
+        return 0
 def process(text,iota):
     data = convert(text)
-    if len(convert(text)) >= partition*(targetNgramSize*iota) and iota < mod:
+    if len(convert(text)) >= partition*(targetNgramSize*iota):
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
-        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize,partition*iota)
-        sync = ""
-        sentences = sorted(sentences, key=functools.cmp_to_key(compare))
-
-        for sentence in list(set(map(tuple,sentences))):
-            for proc in sentence:
-                sync += proc + " "
-        return sync + " "
-    if len(convert(text)) >= partition*(targetNgramSize*iota) and iota >= mod:
-        chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
-        sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
-        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(targetNgramSize*iota,partition)
+        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition,targetNgramSize*iota)
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
-            for proc in sentence:
+            for proc in set(sorted(sentence, key=functools.cmp_to_key(mycmp))):
                 sync += proc + " "
         return sync + " "
     return text
