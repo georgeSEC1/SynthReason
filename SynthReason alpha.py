@@ -48,12 +48,13 @@ def gather(user,file):
                 output += sentence + token
     return output 
 def mycmp(a, b):
-    if sum(list(map(ord,b)), len(a)-len(b)) > sum(list(map(ord,a))):
-        return 1
-    elif sum(list(map(ord,b)), len(a)) < sum(list(map(ord,a))):
-        return -1
-    else:
-        return 0
+    for var in list(map(ord,a)):
+        if sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
+            return 1
+        elif sum(list(map(ord,b)), round(var/len(a)+1)) > sum(list(map(ord,a))):
+            return -1
+        else:
+            return 0
 def process(text,iota):
     data = convert(text)
     if len(convert(text)) >= partition*(targetNgramSize*iota):
