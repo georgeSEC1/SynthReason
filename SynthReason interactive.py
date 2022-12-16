@@ -49,9 +49,9 @@ def gather(user,file):
     return output 
 def mycmp(a, b):
     for var in list(map(ord,a)):
-        if sum(list(map(ord,b)), round(var/len(a)+1)) > sum(list(map(ord,a))):
+        if sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
             return 1
-        elif sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
+        elif sum(list(map(ord,b)), round(var/len(a)+1)) > sum(list(map(ord,a))):
             return -1
         else:
             return 0
