@@ -30,10 +30,10 @@ import numpy as np
 import functools
 partition = 32
 recursion = 32
-targetNgramSize = 3
-token = "."
+targetNgramSize = 4
+token = " is "
 mod = 5
-file = ""
+from textblob import TextBlob
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -46,7 +46,7 @@ def gather(user,file):
         for word in words:
             if sentence.find(" " + word + " ") > -1:
                 output += sentence + token
-    return output 
+    return output
 def mycmp(a, b):
     for var in list(map(ord,a)):
         if sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
@@ -55,15 +55,26 @@ def mycmp(a, b):
             return -1
         else:
             return 0
-def process(text,iota):
+def sentiment(ngram):
+    res = TextBlob(ngram)
+    return res.sentiment.polarity
+def process(text):
     data = convert(text)
-    if len(convert(text)) >= partition*(targetNgramSize*iota):
-        chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize*iota)))
-        sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize*iota))])
-        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition,targetNgramSize*iota)
+    if len(convert(text)) >= partition*(targetNgramSize):
+        chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize)))
+        sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize))])
+        sentences = sentences[:partition*(targetNgramSize)].reshape(partition,targetNgramSize).flatten()
         sync = ""
+        db = []
+        for var in sentences:
+            db.append(sentiment(str(var)))
+        db = np.array(db)
+        sentences = np.stack(( db,sentences)).reshape(-1,sentences.shape[0])
+        sentences = np.sort(sentences, axis=0)
+        sentences = np.delete(sentences, 0, 0) 
+        sentences = sentences[:partition*(targetNgramSize)].reshape(partition,targetNgramSize)
         for sentence in list(set(map(tuple,sentences))):
-            for proc in set(sorted(sentence, key=functools.cmp_to_key(mycmp))):
+            for proc in sentence:
                 sync += proc + " "
         return sync + " "
     return text
@@ -86,13 +97,7 @@ while(True):
     for file in files:
         selection = []
         sync = gather(user,file.strip())
-        for m in range(recursion):
-            for n in reversed(range(recursion)):
-                try:
-                    if round(ord(sync[n])/m+1) > targetNgramSize:
-                        sync = process(sync,round(ord(sync[n])/m+1))
-                except:
-                    False
+        sync = process(sync)
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
