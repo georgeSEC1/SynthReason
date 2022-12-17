@@ -31,7 +31,7 @@ import functools
 partition = 32
 recursion = 32
 targetNgramSize = 4
-token = " is "
+token = "."
 mod = 5
 from textblob import TextBlob
 def convert(lst):
