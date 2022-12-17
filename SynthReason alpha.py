@@ -47,6 +47,14 @@ def gather(user,file):
             if sentence.find(" " + word + " ") > -1:
                 output += sentence + token
     return output
+def mycmp(a, b):
+    for var in list(map(ord,a)):
+        if sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
+            return 1
+        elif sum(list(map(ord,b)), round(var/len(a)+1)) > sum(list(map(ord,a))):
+            return -1
+        else:
+            return 0
 def sentiment(ngram):
     return set(sorted(ngram, key=functools.cmp_to_key(mycmp)))
 def process(text):
