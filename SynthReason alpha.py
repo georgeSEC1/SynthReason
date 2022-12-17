@@ -73,6 +73,7 @@ def process(text):
         dbX = np.array(dbX)
         dbY = np.array(dbY)
         sentences = np.stack((dbX, dbY))
+        sentences = sentences [ :, sentences[0].argsort()]
         sentences = np.delete(sentences, 0, 0) 
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
