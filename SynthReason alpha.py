@@ -30,7 +30,7 @@ import numpy as np
 import functools
 partition = 32
 recursion = 32
-targetNgramSize = 4
+targetNgramSize = 3
 token = " is "
 mod = 5
 from textblob import TextBlob
@@ -57,22 +57,26 @@ def mycmp(a, b):
             return 0
 def sentiment(ngram):
     res = TextBlob(ngram)
-    return res.sentiment.polarity
+    return res.sentiment.subjectivity
 def process(text):
     data = convert(text)
     if len(convert(text)) >= partition*(targetNgramSize):
         chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize)))
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize))])
-        sentences = sentences[:partition*(targetNgramSize)].reshape(partition,targetNgramSize).flatten()
-        sync = ""
-        db = []
-        for var in sentences:
-            db.append(sentiment(str(var)))
-        db = np.array(db)
-        sentences = np.stack(( db,sentences)).reshape(-1,sentences.shape[0])
-        sentences = np.sort(sentences, axis=0)
-        sentences = np.delete(sentences, 0, 0) 
         sentences = sentences[:partition*(targetNgramSize)].reshape(partition,targetNgramSize)
+        sync = ""
+        dbX = []
+        dbY = []
+        sentences.swapaxes(0,1).reshape(-1,sentences.shape[1])
+        for var in sentences:
+            dbX.append(sentiment(' '.join(var)))
+            dbY.append(' '.join(var))
+        dbX = np.array(dbX)
+        dbY = np.array(dbY)
+        sentences = np.stack((dbX, dbY))
+        sentences = np.sort(sentences, axis=0)
+        print(sentences)
+        sentences = np.delete(sentences, 0, 0) 
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
                 sync += proc + " "
