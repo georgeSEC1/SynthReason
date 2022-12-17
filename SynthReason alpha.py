@@ -74,8 +74,7 @@ def process(text):
         dbX = np.array(dbX)
         dbY = np.array(dbY)
         sentences = np.stack((dbX, dbY))
-        index_array = np.argpartition(sentences, kth=2, axis=1)
-        sentences = np.take_along_axis(sentences, index_array, axis=-1)
+        sentences = sentences [ :, sentences[0].argsort()]
         sentences = np.delete(sentences, 0, 0) 
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
