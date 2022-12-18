@@ -32,8 +32,6 @@ partition = 32
 recursion = 32
 targetNgramSize = 3
 token = "."
-mod = 5
-from textblob import TextBlob
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -55,7 +53,7 @@ def mycmp(a, b):
             return -1
         else:
             return 0
-def sentiment(ngram):
+def sort(ngram):
     return set(sorted(ngram, key=functools.cmp_to_key(mycmp)))
 def process(text):
     data = convert(text)
@@ -68,7 +66,7 @@ def process(text):
         dbY = []
         sentences.swapaxes(0,1).reshape(-1,sentences.shape[1])
         for var in sentences:
-            dbX.append(sentiment(' '.join(var)))
+            dbX.append(sort(' '.join(var)))
             dbY.append(' '.join(var))
         dbX = np.array(dbX)
         dbY = np.array(dbY)
