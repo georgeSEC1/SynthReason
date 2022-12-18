@@ -31,7 +31,7 @@ import functools
 partition = 32
 recursion = 32
 targetNgramSize = 3
-token = " is "
+token = "."
 mod = 5
 from textblob import TextBlob
 def convert(lst):
@@ -49,9 +49,9 @@ def gather(user,file):
     return output
 def mycmp(a, b):
     for var in list(map(ord,a)):
-        if sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
+        if sum(list(map(ord,b))) / sum(list(map(ord,b))) >  round(var/len(a)+1):
             return 1
-        elif sum(list(map(ord,b)), round(var/len(a)+1)) > sum(list(map(ord,a))):
+        elif sum(list(map(ord,b)) ) / sum(list(map(ord,a))) >  round(var/len(b)+1):
             return -1
         else:
             return 0
