@@ -32,8 +32,6 @@ partition = 32
 recursion = 32
 targetNgramSize = 3
 token = " the "
-mod = 5
-from textblob import TextBlob
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -41,21 +39,21 @@ def gather(user,file):
         text = f.read()
     output = ""
     words = convert(user)
-    sentences = text.split(token)
-    for sentence in sentences:
-        for word in words:
-            if sentence.find(" " + word + " ") > -1:
+    for word in words:
+        sentences = text.split(word)
+        for sentence in sentences:
+            if len(convert(sentence)) <= len(output)+5:
                 output += sentence + token
     return output
 def mycmp(a, b):
     for var in list(map(ord,a)):
-        if sum(list(map(ord,b)), round(var/len(a)+1)) < len(a):
+        if sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
             return 1
         elif sum(list(map(ord,b)), round(var/len(a)+1)) > sum(list(map(ord,a))):
             return -1
         else:
             return 0
-def sentiment(ngram):
+def sort(ngram):
     return set(sorted(ngram, key=functools.cmp_to_key(mycmp)))
 def process(text):
     data = convert(text)
@@ -64,17 +62,6 @@ def process(text):
         sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize))])
         sentences = sentences[:partition*(targetNgramSize)].reshape(partition,targetNgramSize)
         sync = ""
-        dbX = []
-        dbY = []
-        sentences.swapaxes(0,1).reshape(-1,sentences.shape[1])
-        for var in sentences:
-            dbX.append(sentiment(' '.join(var)))
-            dbY.append(' '.join(var))
-        dbX = np.array(dbX)
-        dbY = np.array(dbY)
-        sentences = np.stack((dbX, dbY))
-        sentences = sentences [ :, sentences[0].argsort()]
-        sentences = np.delete(sentences, 0, 0) 
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
                 sync += proc + " "
