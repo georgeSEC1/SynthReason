@@ -42,7 +42,7 @@ def gather(user,file):
     for word in words:
         sentences = text.split(word)
         for sentence in sentences:
-            if len(convert(sentence)) <= len(output)+5 and sentence.find(words[random.randint(0,len(words)-1)]) > -1:
+            if len(convert(sentence)) <= len(output)+5:
                 output += sentence + token
     return output
 def mycmp(a, b):
