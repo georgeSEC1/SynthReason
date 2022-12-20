@@ -28,7 +28,7 @@ import random
 import re
 import numpy as np
 import functools
-partition = 64
+partition = 32
 targetNgramSize = 3
 token = ","
 def convert(lst):
@@ -86,7 +86,7 @@ for question in questions:
     for file in files:
         selection = []
         sync = gather(user,file.strip())
-        sync = process(sync)
+        sync = process(sync)+process(gather(process(sync),file.strip()))
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
