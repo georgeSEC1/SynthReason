@@ -43,8 +43,6 @@ def gather(user,file):
         for sentence in sentences:
             if sum(list(map(ord,sentence)), round(len(word)+1)) > sum(list(map(ord,word))):
                 return sentence 
-            elif sum(list(map(ord,sentence)), round(len(word)+1)) < sum(list(map(ord,word))):
-                return word 
     return output
 def mycmp(a, b):
     for varX in list(map(ord,a)):
