@@ -28,10 +28,9 @@ import random
 import re
 import numpy as np
 import functools
-partition = 32
-recursion = 32
+partition = 64
 targetNgramSize = 3
-token = "."
+token = ","
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -42,18 +41,20 @@ def gather(user,file):
     for word in words:
         sentences = text.split(word)
         for sentence in sentences:
-            if len(convert(sentence)) >= sentence.find(token):
-                output += sentence + token
+            if sum(list(map(ord,sentence)), round(len(word)+1)) > sum(list(map(ord,word))):
+                return sentence 
+            elif sum(list(map(ord,sentence)), round(len(word)+1)) < sum(list(map(ord,word))):
+                return word 
     return output
 def mycmp(a, b):
-    for var in list(map(ord,a)):
-        for var in list(map(ord,b)):
-            if sum(list(map(ord,b)), round(var/len(a)+1)) > sum(list(map(ord,a))):
+    for varX in list(map(ord,a)):
+        for varY in list(map(ord,b)):
+            if sum(list(map(ord,b)), round(varX/len(a)+1)) > sum(list(map(ord,a))):
                 return 1
-            elif sum(list(map(ord,b)), round(var/len(a)+1)) < sum(list(map(ord,a))):
+            elif sum(list(map(ord,b)), round(varY/len(a)+1)) < sum(list(map(ord,a))):
                 return -1
             else:
-                return var
+                return varX*varY
 def sort(ngram):
     return set(sorted(ngram, key=functools.cmp_to_key(mycmp)))
 def process(text):
