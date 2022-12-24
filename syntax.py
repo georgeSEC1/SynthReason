@@ -32,4 +32,3 @@ with open("fileList.conf", encoding='ISO-8859-1') as x:
                 y.close()
                 print(list(set(db)))
             n+=1
-   
