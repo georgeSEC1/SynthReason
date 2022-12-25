@@ -27,15 +27,14 @@ def gather(user,file):
     words = convert(user)
     data = convert(text)
     for word in words:
-
         for wordX in data:
             proc = ""
             try:
                 with open(word + ".dat", encoding='ISO-8859-1') as f:
                     proc = f.read().split("\n")
-                sentences = text.split(" " + wordX + " ")
+                sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
                 for line in sentences:
-                    if line.find(wordX) > -1 and line.find(word) > - 1 and processB(proc,line) == True :
+                    if line.find(wordX) < line.find(word)  and processB(proc,line) != processB(word,line) == True :
                         return line 
             except:
                 False
