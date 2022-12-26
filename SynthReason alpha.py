@@ -34,7 +34,7 @@ def gather(user,file):
                     proc = f.read().split("\n")
                 sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
                 for line in sentences:
-                    if line.find(wordX) < line.find(word)  and processB(proc,line) != processB(word,line) == True :
+                    if line.find(wordX) < line.find("ion")  and processB(proc,line) != processB(word,line) == False :
                         return line 
             except:
                 False
