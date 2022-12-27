@@ -15,9 +15,7 @@ def processB(proc, line):
     for i in range(work):
         if line.find(" " + proc[random.randint(0,len(proc)-1)] + " ") > -1:
             stat += 1
-    if stat >= work:
-        return True
-    return False
+    return stat*line.find(" " + proc[random.randint(0,len(proc)-1)] + " ")
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -34,7 +32,7 @@ def gather(user,file):
                     proc = f.read().split("\n")
                 sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
                 for line in sentences:
-                    if line.find(wordX) < line.find("ion")  and processB(proc,line) != processB(word,line) == False :
+                    if line.find(wordX) < line.find("ion")  and processB(proc,line) != processB(word,line) >processB(data,line) :
                         return line 
             except:
                 False
