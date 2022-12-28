@@ -26,18 +26,15 @@ def gather(user,file):
     output = ""
     words = convert(user)
     data = convert(text)
-    for wordX in reversed(data):
-        for word in words:
+    for word in words:
+        for wordX in data:
             proc = ""
             try:
                 with open(word + ".dat", encoding='ISO-8859-1') as f:
-                    procA = f.read().split("\n")
-                with open(procA[random.randint(0,len(procA)-1)] + ".dat", encoding='ISO-8859-1') as f:
-                    procB = f.read().split("\n")
-                joinedlist = procA + procB
-                sentences = text.split(" " + joinedlist[random.randint(0,len(joinedlist)-1)] + " ")
+                    proc = f.read().split("\n")
+                sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
                 for line in sentences:
-                    if line.find("e") < line.find("ion")  and processB(joinedlist,line) != processB(words,line) == True :
+                    if line.find(wordX) < line.find("ion")  and processB(proc,line) != processB(word,line) == False :
                         return line 
             except:
                 False
