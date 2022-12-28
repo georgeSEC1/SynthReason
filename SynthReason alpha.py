@@ -3,13 +3,38 @@
 # 
 # Copyright (c) 2022, GeorgeSEC1 - George Wagenknecht
 # All rights reserved.
+# 
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+# 
+# 1. Redistributions of source code must retain the above copyright notice, this
+#    list of conditions and the following disclaimer.
+# 
+# 2. Redistributions in binary form must reproduce the above copyright notice,
+#    this list of conditions and the following disclaimer in the documentation
+#    and/or other materials provided with the distribution.
+# 
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
 import re
 import numpy as np
-partition = 128
-targetNgramSize = 3
+import math
+partition = 32
+recursion = 320
 work = 8
-token = "."
+targetNgramSize = 3
+token = " the "
+def convert(lst):
+    return (lst.split())
 def processB(proc, line):
     stat = 0
     for i in range(work):
@@ -18,45 +43,35 @@ def processB(proc, line):
     if stat >= work:
         return True
     return False
-def convert(lst):
-    return (lst.split())
 def gather(user,file):
     with open(file, encoding='ISO-8859-1') as f:
         text = f.read()
     output = ""
     words = convert(user)
-    data = convert(text)
+    sentences = text.split(token)
     for word in words:
-        for wordX in data:
-            proc = ""
-            try:
-                with open(word + ".dat", encoding='ISO-8859-1') as f:
+        try:
+            with open(word + ".dat", encoding='ISO-8859-1') as f:
                     proc = f.read().split("\n")
-                sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
-                for line in sentences:
-                    if line.find(wordX) < line.find("ion")  and processB(proc,line) != processB(word,line) == False :
-                        return line 
-            except:
-                False
-    return output
-def process(text):
-    data = convert(text)
-    if len(convert(text)) >= partition*(targetNgramSize):
-        chunkPos = random.randint(0,len(data)-(partition*(targetNgramSize)))
-        sentences = np.array(data[chunkPos:chunkPos+(partition*(targetNgramSize))])
-        sentences = sentences[:partition*(targetNgramSize)].reshape(partition,targetNgramSize)
+            sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
+            for sentence in sentences:
+                if sentence.find(" " + word + " ") > -1:
+                    if sentence.find(word) < sentence.find("ion")  and processB(proc,sentence) != processB(words,sentence) == False :
+                        return sentence 
+        except:
+            False
+    return output 
+def process(text,iota):
+    sentences = convert(text)
+    if len(convert(text)) > partition*(targetNgramSize*iota):
+        sentences = np.array(sentences)
+        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
         sync = ""
         for sentence in list(set(map(tuple,sentences))):
             for proc in sentence:
-                    sync += proc + " "
+                sync += proc + " "
         return sync + " "
     return text
-def getSentence(sync):
-    sentences = sync.split(".")
-    try:
-        return '.'.join(sentences[:-1]) + "."
-    except:
-        return sync
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -68,19 +83,28 @@ for question in questions:
     user = re.sub('\W+',' ',question)
     random.shuffle(files)
     for file in files:
+        selection = []
         sync = gather(user,file.strip())
-        sync = process(sync)
+        for m in reversed(range(recursion)):
+            if m > 0:
+                for n in (range(recursion)):
+                    if n > 0:
+                        try:
+                            if round(ord(sync[n])/m) >= targetNgramSize:
+                                sync = process(sync,round(ord(sync[n])/m))
+                        except:
+                            False
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
-            print("AI:" ,getSentence(sync))
+            print("AI:" ,sync)
             print()
             print()
             f = open(filename, "a", encoding="utf8")
             f.write("\n")
             f.write("using " + file.strip() + " answering: " + user)
             f.write("\n")
-            f.write(getSentence(sync))
+            f.write(sync)
             f.write("\n")
             f.close()
             if len(convert(sync)) >= 0:
