@@ -15,7 +15,9 @@ def processB(proc, line):
     for i in range(work):
         if line.find(" " + proc[random.randint(0,len(proc)-1)] + " ") > -1:
             stat += 1
-    return stat*line.find(" " + proc[random.randint(0,len(proc)-1)] + " ")
+    if stat >= work:
+        return True
+    return False
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -24,15 +26,18 @@ def gather(user,file):
     output = ""
     words = convert(user)
     data = convert(text)
-    for word in words:
-        for wordX in data:
+    for wordX in reversed(data):
+        for word in words:
             proc = ""
             try:
                 with open(word + ".dat", encoding='ISO-8859-1') as f:
-                    proc = f.read().split("\n")
-                sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
+                    procA = f.read().split("\n")
+                with open(procA[random.randint(0,len(procA)-1)] + ".dat", encoding='ISO-8859-1') as f:
+                    procB = f.read().split("\n")
+                joinedlist = procA + procB
+                sentences = text.split(" " + joinedlist[random.randint(0,len(joinedlist)-1)] + " ")
                 for line in sentences:
-                    if line.find(wordX) < line.find("ion")  and processB(proc,line) != processB(word,line) >processB(data,line) :
+                    if line.find("e") < line.find("ion")  and processB(joinedlist,line) != processB(words,line) == True :
                         return line 
             except:
                 False
