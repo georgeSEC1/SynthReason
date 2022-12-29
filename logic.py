@@ -25,14 +25,6 @@
 # OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
-import re
-import numpy as np
-import math
-partition = 32
-recursion = 320
-work = 8
-targetNgramSize = 3
-token = " the "
 def convert(lst):
     return (lst.split())
 def process(file):
@@ -64,7 +56,7 @@ def process(file):
     return string 
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
-print("SynthReason - Synthetic Dawn")
+print("SynthReason - Synthetic logic")
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(files)
 for file in files:
