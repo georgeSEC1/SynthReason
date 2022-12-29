@@ -61,16 +61,15 @@ filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(files)
 for file in files:
     selection = []
-    sync = process(file.strip())
-    if len(convert(sync)) >= partition:                  
-        print()
-        print("AI:" ,sync)
-        print()
-        print()
-        f = open(filename, "a", encoding="utf8")
-        f.write("\n")
-        f.write(sync)
-        f.write("\n")
-        f.close()
-        if len(convert(sync)) >= 0:
-            break
+    sync = process(file.strip())                
+    print()
+    print("AI:" ,sync)
+    print()
+    print()
+    f = open(filename, "a", encoding="utf8")
+    f.write("\n")
+    f.write(sync)
+    f.write("\n")
+    f.close()
+    if len(convert(sync)) >= 0:
+        break
