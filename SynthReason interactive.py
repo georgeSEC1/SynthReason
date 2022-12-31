@@ -32,17 +32,9 @@ partition = 32
 recursion = 320
 work = 8
 targetNgramSize = 3
-token = " the "
+token = "."
 def convert(lst):
     return (lst.split())
-def processB(proc, line):
-    stat = 0
-    for i in range(work):
-        if line.find(" " + proc[random.randint(0,len(proc)-1)] + " ") > -1:
-            stat += 1
-    if stat >= work:
-        return True
-    return False
 def gather(user,file):
     with open(file, encoding='ISO-8859-1') as f:
         text = f.read()
@@ -50,28 +42,10 @@ def gather(user,file):
     words = convert(user)
     sentences = text.split(token)
     for word in words:
-        try:
-            with open(word + ".dat", encoding='ISO-8859-1') as f:
-                    proc = f.read().split("\n")
-            sentences = text.split(" " + proc[random.randint(0,len(proc)-1)] + " ")
-            for sentence in sentences:
-                if sentence.find(" " + word + " ") > -1:
-                    if sentence.find(word) < sentence.find("ion")  and processB(proc,sentence) != processB(words,sentence) == False :
-                        return sentence 
-        except:
-            False
+        for sentence in sentences:
+            if sentence.find(" " + word + " ") > -1:
+                output += sentence + "." 
     return output 
-def process(text,iota):
-    sentences = convert(text)
-    if len(convert(text)) > partition*(targetNgramSize*iota):
-        sentences = np.array(sentences)
-        sentences = sentences[:partition*(targetNgramSize*iota)].reshape(partition, targetNgramSize*iota)
-        sync = ""
-        for sentence in list(set(map(tuple,sentences))):
-            for proc in sentence:
-                sync += proc + " "
-        return sync + " "
-    return text
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -83,17 +57,16 @@ while(True):
     user = re.sub('\W+',' ',input("USER: "))
     random.shuffle(files)
     for file in files:
-        selection = []
-        sync = gather(user,file.strip())
-        for m in reversed(range(recursion)):
-            if m > 0:
-                for n in (range(recursion)):
-                    if n > 0:
-                        try:
-                            if round(ord(sync[n])/m) >= targetNgramSize:
-                                sync = process(sync,round(ord(sync[n])/m))
-                        except:
-                            False
+        data = convert(gather(user,file.strip()))
+        procA = np.arange(start=1, stop=3000, step=2)
+        procB = np.arange(start=1, stop=2000, step=30)
+        result = np.convolve(procA, procB)
+        sync = ""
+        for i in reversed(result):
+            try:
+                sync += data[i-1] + " "+data[i] + " "+data[i+1] + " "
+            except:
+                False
         if len(convert(sync)) >= partition:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
