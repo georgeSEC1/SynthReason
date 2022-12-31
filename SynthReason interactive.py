@@ -1,7 +1,7 @@
 # SynthReason - Synthetic Dawn - intelligent symbolic manipulation system
 # BSD 2-Clause License
 # 
-# Copyright (c) 2022, GeorgeSEC1 - George Wagenknecht
+# Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
 # All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
@@ -53,13 +53,13 @@ while(True):
     random.shuffle(files)
     for file in files:
         data = convert(gather(user,file.strip()))
-        procA = np.arange(start=1, stop=3000, step=2)
-        procB = np.arange(start=1, stop=2000, step=30)
+        procA = np.arange(start=1, stop=30000, step=8)
+        procB = np.arange(start=1, stop=20000, step=1)
         result = np.convolve(procA, procB)
         sync = ""
         for i in reversed(result):
             try:
-                sync += data[i-1] + " "+data[i] + " "+data[i+1] + " "
+                sync += data[procB[i-1]] + " "+data[procB[i]] + " "+data[procB[i+1]] + " "
             except:
                 False
         if len(convert(sync)) >= 0:                  
