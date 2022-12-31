@@ -27,11 +27,6 @@
 import random
 import re
 import numpy as np
-import math
-partition = 32
-recursion = 320
-work = 8
-targetNgramSize = 3
 token = "."
 def convert(lst):
     return (lst.split())
@@ -67,7 +62,7 @@ for question in questions:
                 sync += data[i-1] + " "+data[i] + " "+data[i+1] + " "
             except:
                 False
-        if len(convert(sync)) >= partition:                  
+        if len(convert(sync)) >= 0:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
             print("AI:" ,sync)
