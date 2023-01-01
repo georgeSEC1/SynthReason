@@ -58,10 +58,11 @@ while(True):
         procA = np.arange(start=1, stop=30000, step=7)
         procB = np.arange(start=1, stop=20000, step=1)
         result = np.convolve(procA, procB)
+        pos = random.randint(0,len(data)-1)
         sync = ""
         for i in result:
             try:
-                sync += data[procB[i-1]] + " " + data[procB[i]] + " " + data[procB[i+1]] + " "
+                sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
             except:
                 False
         if len(convert(sync)) >= 0:                  
