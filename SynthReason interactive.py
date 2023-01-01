@@ -27,7 +27,7 @@
 import random
 import re
 import numpy as np
-token = " the "
+token = ","
 def convert(lst):
     return (lst.split())
 def gather(user,file):
