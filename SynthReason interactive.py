@@ -27,7 +27,7 @@
 import random
 import re
 import numpy as np
-token = ","
+token = " the "
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -35,11 +35,13 @@ def gather(user,file):
         text = f.read()
     output = ""
     words = convert(user)
-    sentences = text.split(token)
-    for sentence in sentences:
-        for word in words:
-            if sentence.find(" " + word + " ") > -1:
-                output += sentence + ". " 
+    for word in words:
+        sentences = text.split(" " + word + " ")
+        for sentence in sentences:
+            for wordX in words:
+                if sentence.find(" " + wordX + " ") > -1:
+                    output += sentence + token 
+                    break
     return output 
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
@@ -53,7 +55,7 @@ while(True):
     random.shuffle(files)
     for file in files:
         data = convert(gather(user,file.strip()))
-        procA = np.arange(start=1, stop=30000, step=8)
+        procA = np.arange(start=1, stop=30000, step=7)
         procB = np.arange(start=1, stop=20000, step=1)
         result = np.convolve(procA, procB)
         sync = ""
