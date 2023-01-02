@@ -57,7 +57,7 @@ while(True):
         data = convert(gather(user,file.strip()))
         procA = np.arange(start=1, stop=30000, step=7)
         procB = np.arange(start=1, stop=20000, step=1)
-        varArray = np.concatenate((procA,procB))
+        varArray = np.concatenate((procB,procA,procB))
         result = np.convolve(varArray, procB)
         pos = random.randint(0,len(data)-1)
         sync = ""
