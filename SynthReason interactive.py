@@ -27,6 +27,7 @@
 import random
 import re
 import numpy as np
+recursion = 8
 token = " the "
 def convert(lst):
     return (lst.split())
@@ -58,7 +59,9 @@ while(True):
         procA = np.arange(start=1, stop=30000, step=7)
         procB = np.arange(start=1, stop=20000, step=1)
         varArray = np.concatenate((procB,procA,procB))
-        result = np.convolve(varArray, procB)
+        for i in range(recursion):
+            result = np.convolve(varArray, procB)+i
+            varArray = np.concatenate((procB,result,procB))
         pos = random.randint(0,len(data)-1)
         sync = ""
         for i in result:
