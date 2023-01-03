@@ -56,16 +56,17 @@ for question in questions:
     random.shuffle(files)
     for file in files:
         data = convert(gather(user,file.strip()))
-        procA = np.arange(start=1, stop=30000, step=7)
+        procA = np.arange(start=1, stop=30000, step=3)
         procB = np.arange(start=1, stop=20000, step=1)
         varArray = np.concatenate((procB,procA,procB))
         for i in range(recursion):
-            result = np.convolve(np.poly1d(varArray), procB)
+            result = np.convolve(varArray, procB)
             varArray = np.concatenate((procB,result))
         pos = random.randint(0,len(data)-1)
         sync = ""
         for i in result:
             try:
+                i%=sum(list(map(ord,data[procB[i]])))
                 sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
             except:
                 False
