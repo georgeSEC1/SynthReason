@@ -60,7 +60,7 @@ for question in questions:
         procB = np.arange(start=1, stop=20000, step=1)
         varArray = np.concatenate((procB,procA,procB))
         for i in range(recursion):
-            result = np.convolve(varArray, procB)+i
+            result = np.convolve(np.poly1d(varArray), procB)
             varArray = np.concatenate((procB,result))
         pos = random.randint(0,len(data)-1)
         sync = ""
