@@ -58,12 +58,14 @@ for question in questions:
         data = convert(gather(user,file.strip()))
         procA = np.arange(start=1, stop=30000, step=3)
         procB = np.arange(start=1, stop=20000, step=1)
-        varArray = np.concatenate((procB,procA,procB))
+        varArray = np.sort(np.concatenate((procB,procA,procB)),axis = 0)
         for i in range(recursion):
             result = np.convolve(varArray, procB)
             varArray = np.concatenate((procB,result))
         pos = random.randint(0,len(data)-1)
         sync = ""
+        result = result[:round(len(result/15))].reshape(round(len(result/15)), -1)
+        result = np.sort(result,axis = 0).flatten()
         for i in result:
             try:
                 sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
