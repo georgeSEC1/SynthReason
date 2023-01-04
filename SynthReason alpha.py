@@ -27,7 +27,7 @@
 import random
 import re
 import numpy as np
-recursion = 8
+recursion = 2
 token = ""
 def convert(lst):
     return (lst.split())
