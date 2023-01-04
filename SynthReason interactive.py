@@ -62,13 +62,13 @@ while(True):
         for i in range(recursion):
             result = np.convolve(varArray, procB)
             varArray = np.concatenate((procB,result))
-            pos = random.randint(0,len(data)-1)
-            sync = ""
-            for i in result:
-                try:
-                    sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
-                except:
-                    False
+        pos = random.randint(0,len(data)-1)
+        sync = ""
+        for i in result:
+            try:
+                sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
+            except:
+                False
         if len(convert(sync)) >= 0:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
