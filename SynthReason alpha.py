@@ -28,7 +28,7 @@ import random
 import re
 import numpy as np
 recursion = 8
-token = " the "
+token = ""
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -62,14 +62,13 @@ for question in questions:
         for i in range(recursion):
             result = np.convolve(varArray, procB)
             varArray = np.concatenate((procB,result))
-        pos = random.randint(0,len(data)-1)
-        sync = ""
-        for i in result:
-            try:
-                i%=sum(list(map(ord,data[procB[i]])))
-                sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
-            except:
-                False
+            pos = random.randint(0,len(data)-1)
+            sync = ""
+            for i in result:
+                try:
+                    sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
+                except:
+                    False
         if len(convert(sync)) >= 0:                  
             print()
             print("using " , file.strip() ,  " answering: " , user)
