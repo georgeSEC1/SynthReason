@@ -44,7 +44,6 @@ def gather(user,file):
             for wordX in words:
                 sentences = text.split(" " + wordX + " ")
                 for sentence in sentences:
-
                     if sentence.find(" " + data[array[i]] + " ") > -1:
                         output += sentence + token 
                         i+=1
