@@ -36,13 +36,20 @@ def gather(user,file):
         text = f.read()
     output = ""
     words = convert(user)
+    data = convert(text)
+    i = 0
     for word in words:
-        sentences = text.split(" " + word + " ")
-        for sentence in sentences:
-            for wordX in words:
-                if sentence.find(" " + wordX + " ") > -1:
-                    output += sentence + token 
-                    break
+        array = np.arange(start=1, stop=30000, step=3)
+        try:
+            sentences = text.split(" " + data[array[i]] + " ")
+            for sentence in sentences:
+                for wordX in words:
+                    if sentence.find(" " + wordX + " ") > -1:
+                        output += sentence + token 
+                        i+=1
+                        break
+        except:
+            False
     return output 
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
