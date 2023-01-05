@@ -39,12 +39,13 @@ def gather(user,file):
     data = convert(text)
     i = 0
     for word in words:
-        array = np.arange(start=1, stop=30000, step=3)
+        array = np.arange(start=1, stop=30000, step=4)
         try:
-            sentences = text.split(" " + data[array[i]] + " ")
-            for sentence in sentences:
-                for wordX in words:
-                    if sentence.find(" " + wordX + " ") > -1:
+            for wordX in words:
+                sentences = text.split(" " + wordX + " ")
+                for sentence in sentences:
+
+                    if sentence.find(" " + data[array[i]] + " ") > -1:
                         output += sentence + token 
                         i+=1
                         break
@@ -63,31 +64,32 @@ while(True):
     random.shuffle(files)
     for file in files:
         data = convert(gather(user,file.strip()))
-        procA = np.arange(start=1, stop=30000, step=3)
-        procB = np.arange(start=1, stop=20000, step=1)
-        varArray = np.concatenate((procB,procA,procB))
-        for i in range(recursion):
-            result = np.convolve(varArray, procB)
-            varArray = np.concatenate((procB,result))
-        pos = random.randint(0,len(data)-1)
-        sync = ""
-        for i in result:
-            try:
-                sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
-            except:
-                False
-        if len(convert(sync)) >= 0:                  
-            print()
-            print("using " , file.strip() ,  " answering: " , user)
-            print("AI:" ,sync)
-            print()
-            print()
-            f = open(filename, "a", encoding="utf8")
-            f.write("\n")
-            f.write("using " + file.strip() + " answering: " + user)
-            f.write("\n")
-            f.write(sync)
-            f.write("\n")
-            f.close()
-            if len(convert(sync)) >= 0:
-                break
+        if len(data) > 0:
+            procA = np.arange(start=1, stop=30000, step=3)
+            procB = np.arange(start=1, stop=20000, step=1)
+            varArray = np.concatenate((procB,procA,procB))
+            for i in range(recursion):
+                result = np.convolve(varArray, procB)
+                varArray = np.concatenate((procB,result))
+            pos = random.randint(0,len(data)-1)
+            sync = ""
+            for i in result:
+                try:
+                    sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
+                except:
+                    False
+            if len(convert(sync)) >= 0:                  
+                print()
+                print("using " , file.strip() ,  " answering: " , user)
+                print("AI:" ,sync)
+                print()
+                print()
+                f = open(filename, "a", encoding="utf8")
+                f.write("\n")
+                f.write("using " + file.strip() + " answering: " + user)
+                f.write("\n")
+                f.write(sync)
+                f.write("\n")
+                f.close()
+                if len(convert(sync)) >= 0:
+                    break
