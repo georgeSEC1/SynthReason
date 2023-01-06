@@ -27,7 +27,10 @@
 import random
 import re
 import numpy as np
-recursion = 2
+def intersection(lst1, lst2):
+    lst3 = [value for value in lst1 if value in lst2]
+    return lst3
+recursion = 10
 token = ""
 def convert(lst):
     return (lst.split())
@@ -66,15 +69,13 @@ for question in questions:
         if len(data) > 0:
             procA = np.arange(start=1, stop=30000, step=3)
             procB = np.arange(start=1, stop=20000, step=1)
-            varArray = np.concatenate((procB,procA,procB))
-            for i in range(recursion):
-                result = np.convolve(varArray, procB)
-                varArray = np.concatenate((procB,result))
+            procC = intersection(procA,procB)
+            result = np.convolve(procB, np.concatenate((procA,procC)))
             pos = random.randint(0,len(data)-1)
             sync = ""
             for i in result:
                 try:
-                    sync += data[pos+procB[i-1]] + " " + data[pos+procB[i]] + " " + data[pos+procB[i+1]] + " "
+                    sync += data[pos+procB[i]-1] + " " + data[pos+procB[i]] + " " + data[pos+procB[i]+1] + " "
                 except:
                     False
             if len(convert(sync)) >= 0:                  
