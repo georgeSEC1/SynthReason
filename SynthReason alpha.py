@@ -70,8 +70,8 @@ for question in questions:
             pos = random.randint(0,len(data)-1)
             procA = np.arange(start=1, stop=30000, step=3)
             procB = np.arange(start=1, stop=20000, step=1)
-            procC = intersection(procA,procB)
-            result = np.convolve(procB, np.concatenate((procA,procC)))
+            procX = np.geomspace(1, 512, num=9, dtype=int)
+            result = np.convolve(procB, np.concatenate((procX, procA)))
             sync = ""
             var = 0
             try:
