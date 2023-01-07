@@ -27,11 +27,10 @@
 import random
 import re
 import numpy as np
+token = "the"
 def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
-recursion = 10
-token = ""
 def convert(lst):
     return (lst.split())
 def gather(user,file):
@@ -48,7 +47,7 @@ def gather(user,file):
                 sentences = text.split(" " + wordX + " ")
                 for sentence in sentences:
                     if sentence.find(" " + data[array[i]] + " ") > sentence.find(" " + data[array[i+1]] + " "):
-                        output += sentence + token 
+                        output += sentence
                         i+=1
                         break
         except:
@@ -65,17 +64,23 @@ for question in questions:
     user = re.sub('\W+',' ',question)
     random.shuffle(files)
     for file in files:
-        data = convert(gather(user,file.strip()))
+        text = gather(user,file.strip())
+        data = convert(text)
         if len(data) > 0:
+            pos = random.randint(0,len(data)-1)
             procA = np.arange(start=1, stop=30000, step=3)
             procB = np.arange(start=1, stop=20000, step=1)
             procC = intersection(procA,procB)
             result = np.convolve(procB, np.concatenate((procA,procC)))
-            pos = random.randint(0,len(data)-1)
             sync = ""
-            for i in result:
+            var = 0
+            try:
+                var = data.index(token,pos)
+            except:
+                False
+            for i in range(len(result)):
                 try:
-                    sync += data[pos+procB[i]-1] + " " + data[pos+procB[i]] + " " + data[pos+procB[i]+1] + " "
+                    sync += data[var+result[i]-1] + " " + data[var+result[i]] + " " + data[var+result[i]+1] + " "
                 except:
                     False
             if len(convert(sync)) >= 0:                  
