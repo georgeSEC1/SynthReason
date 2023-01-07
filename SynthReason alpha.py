@@ -80,7 +80,6 @@ for question in questions:
                 False
             for i in range(len(result)):
                 try:
-                    token = procC[i]
                     if len(re.sub('\W+',' ',data[var+result[i]-1] + " " + data[var+result[i]] + " " + data[var+result[i]+1] + " ")) > len(data[var+result[i]-1] + " " + data[var+result[i]] + " " + data[var+result[i]+1] + " ")-2:
                         sync += data[var+result[i]-1] + " " + data[var+result[i]] + " " + data[var+result[i]+1] + " "
                 except:
