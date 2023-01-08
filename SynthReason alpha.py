@@ -38,21 +38,20 @@ def gather(user,file):
         text = f.read()
     output = ""
     words = convert(user)
-    data = convert(text)
-    i = 0
     for word in words:
-        array = np.arange(start=1, stop=30000, step=4)
-        try:
-            for wordX in words:
-                sentences = text.split(" " + wordX + " ")
-                for sentence in sentences:
-                    if sentence.find(" " + data[array[i]] + " ") > sentence.find(" " + data[array[i+1]] + " "):
-                        output += sentence
-                        i+=1
-                        break
-        except:
-            False
+        sentences = text.split(".")
+        for sentence in sentences:
+            if sentence.find(" " + word + " ") > -1:
+                output += sentence
     return output 
+def removeConsecutive(result):
+    previous_value = None
+    new_lst = []
+    for elem in result:
+        if elem != previous_value:
+            new_lst.append(elem)
+            previous_value = elem
+    return new_lst
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -67,11 +66,15 @@ for question in questions:
         text = gather(user,file.strip())
         data = convert(text)
         if len(data) > 0:
+            g1 = random.randint(0,102400)
+            g2 = random.randint(0,320)
+            g1 = 82401
+            g2 = 112
             pos = random.randint(0,len(data)-1)
             procA = np.arange(start=1, stop=30000, step=3)
             procB = np.arange(start=1, stop=20000, step=1)
-            procX = np.geomspace(1, 512, num=9, dtype=int)
-            result = np.convolve(procB, np.concatenate((procX, procA)))
+            procX = np.geomspace(1, g1, num=g2, dtype=int)
+            result = np.sort(np.convolve(procB, np.concatenate((procX, procA))))
             sync = ""
             var = 0
             try:
@@ -84,7 +87,9 @@ for question in questions:
                         sync += data[var+result[i]-1] + " " + data[var+result[i]] + " " + data[var+result[i]+1] + " "
                 except:
                     False
-            if len(convert(sync)) >= 0:                  
+            sync = ' '.join(removeConsecutive(convert(sync)))
+            if len(convert(sync)) >= 1:   
+                print("Geometry:\ng1 =",g1,"\ng2 =",g2)
                 print()
                 print("using " , file.strip() ,  " answering: " , user)
                 print("AI:" ,sync)
