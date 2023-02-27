@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.44
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.45
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -67,6 +67,8 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 	questions = f.readlines()
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
+with open("nouns.txt", encoding='ISO-8859-1') as f:
+	nouns = f.readlines()
 for question in questions:
           user = re.sub('\W+',' ',question)
           random.shuffle(files)  
@@ -79,9 +81,9 @@ for question in questions:
                         ngramsA = getRandNGram(data)
                         ngramsB = getRandNGram(data) 
                         ngramsC = getRandNGram(data) 
-                        for word in convert (text):   
+                        for word in convert(text):
                                     try:
-                                       if convert( (' '.join(ngramsA) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) >-1 <  ((' '.join(ngramsA) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) > -1 <(convert(user)).index(word)> -1 <(convert(' '.join(ngramsC))).index(word) :
+                                       if convert( (' '.join(nouns) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) >-1 <  ((' '.join(nouns) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) > -1:
                                           output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " " + ' '.join(ngramsC) + " ")               
                                           ngramsA = getRandNGram(data)
                                           ngramsB = getRandNGram(data)
