@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.43
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.44
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -78,12 +78,14 @@ for question in questions:
                       for count in range(tries):             
                         ngramsA = getRandNGram(data)
                         ngramsB = getRandNGram(data) 
+                        ngramsC = getRandNGram(data) 
                         for word in convert (text):   
                                     try:
-                                       if convert( (' '.join(ngramsB))).index(word) >-1 <  ( ' '.join(ngramsA) + " ").index(word) > -1 <(convert(user)).index(word) :
-                                          output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
+                                       if convert( (' '.join(ngramsA) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) >-1 <  ((' '.join(ngramsA) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) > -1 <(convert(user)).index(word)> -1 <(convert(' '.join(ngramsC))).index(word) :
+                                          output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " " + ' '.join(ngramsC) + " ")               
                                           ngramsA = getRandNGram(data)
                                           ngramsB = getRandNGram(data)
+                                          ngramsC = getRandNGram(data) 
                                     except:
                                        False
                                     if len(convert(output)) >= size:
