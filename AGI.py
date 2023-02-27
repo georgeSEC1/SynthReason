@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.42
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.43
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -80,7 +80,7 @@ for question in questions:
                         ngramsB = getRandNGram(data) 
                         for word in convert (text):   
                                     try:
-                                       if convert( (' '.join(ngramsA))).index(word) >-1 <  ( ' '.join(ngramsB) + " ").index(word) > -1 <(convert(user)).index(word) :
+                                       if convert( (' '.join(ngramsB))).index(word) >-1 <  ( ' '.join(ngramsA) + " ").index(word) > -1 <(convert(user)).index(word) :
                                           output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
                                           ngramsA = getRandNGram(data)
                                           ngramsB = getRandNGram(data)
