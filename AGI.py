@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.46
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.47
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -35,7 +35,7 @@ def statFind(sentence,arr):
       var = 0
       for word in arr:
          try:
-            if sentence.count(" " + word + " "):
+            if sentence.find(" " + word + " ") > -1:
                var += 1
          except:
                False
@@ -67,6 +67,8 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 	questions = f.readlines()
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
+with open("verbs.txt", encoding='ISO-8859-1') as f:
+	verb = f.readlines()
 with open("nouns.txt", encoding='ISO-8859-1') as f:
 	nouns = f.readlines()
 for question in questions:
@@ -83,7 +85,7 @@ for question in questions:
                         ngramsC = getRandNGram(data) 
                         for word in convert(text):
                                     try:
-                                       if convert( (' '.join(nouns) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) >-1 <  ((' '.join(ngramsA) + " " +' '.join(nouns) + " " + ' '.join(ngramsC))).index(word) > -1:
+                                       if convert( (' '.join(verb) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) >-1 <  ((' '.join(ngramsA) + " " +' '.join(nouns) + " " + ' '.join(ngramsC))).index(word) > -1:
                                           output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " " + ' '.join(ngramsC) + " ")               
                                           ngramsA = getRandNGram(data)
                                           ngramsB = getRandNGram(data)
