@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.47
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.50
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -35,7 +35,7 @@ def statFind(sentence,arr):
       var = 0
       for word in arr:
          try:
-            if sentence.find(" " + word + " ") > -1:
+            if sentence.count(" " + word + " "):
                var += 1
          except:
                False
@@ -47,18 +47,18 @@ def gather(file,user):
     words = convert(user)
     sentences = text.split(token)
     for sentence in sentences:
-                    if statFind(sentence,words) > len(words)/2:
+                    if statFind(sentence,words) > len(words)/8:
                           output += sentence + token
     return output
 def getRandNGram(data):
    output = []
    while(True):
       i = random.randint(3,len(data)-3)
-      if data[i][0].isupper() == False and ( data[i] + " " + data[i+1] + " " + data[i+2]).lower().isprintable() == True:
+      if data[i][0].isupper() == False and ( data[i] + " " + data[i+1] + " " + data[i+2]).lower().isprintable() == True and len(data[i]) % 2 == 0 and len(data[i+2]) % 2 == 1 or len(data[i]) % 2 == 1 and len(data[i+2]) % 2 == 0:
             output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
-      if data[i][0].isupper() == True and ( data[i-1] + " " + data[i] + " " + data[i+1]).lower().isprintable() == True:
+      if data[i][0].isupper() == True and ( data[i-1] + " " + data[i] + " " + data[i+1]).lower().isprintable() == True and len(data[i-1]) % 2 == 0 and len(data[i+1]) % 2 ==1 or len(data[i-1]) % 2 == 1 and len(data[i+1]) % 2 == 0:
             output.append((data[i-1] + " " + data[i] + " " + data[i+1]).lower()) 
-      if len(output) == 4:
+      if len(output) >= 4:
           return output
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
@@ -67,10 +67,6 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 	questions = f.readlines()
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
-with open("verbs.txt", encoding='ISO-8859-1') as f:
-	verb = f.readlines()
-with open("nouns.txt", encoding='ISO-8859-1') as f:
-	nouns = f.readlines()
 for question in questions:
           user = re.sub('\W+',' ',question)
           random.shuffle(files)  
@@ -85,7 +81,7 @@ for question in questions:
                         ngramsC = getRandNGram(data) 
                         for word in convert(text):
                                     try:
-                                       if convert( (' '.join(verb) + " " +' '.join(ngramsB) + " " + ' '.join(ngramsC))).index(word) >-1 <  ((' '.join(ngramsA) + " " +' '.join(nouns) + " " + ' '.join(ngramsC))).index(word) > -1:
+                                       if convert( ' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) >-1 <  (' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) > -1:
                                           output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " " + ' '.join(ngramsC) + " ")               
                                           ngramsA = getRandNGram(data)
                                           ngramsB = getRandNGram(data)
