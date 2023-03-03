@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.54
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.55
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -54,9 +54,9 @@ def getRandNGram(data):
    output = []
    while(True):
       i = random.randint(3,len(data)-3)
-      if data[i][0].isupper() == False and ( data[i] + " " + data[i+1] + " " + data[i+2]).lower().isprintable() == True and len(data[i]) % 2 == 0 and len(data[i+2]) % 2 == 1 or len(data[i]) % 2 == 1 and len(data[i+2]) % 2 == 0:
+      if data[i][0].isupper() == False and len(data[i]) % 2 == 0 and len(data[i+2]) % 2 == 1 or data[i][0].isupper() == False and len(data[i]) % 2 == 1 and len(data[i+2]) % 2 == 0:
             output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
-      if data[i][0].isupper() == True and ( data[i-1] + " " + data[i] + " " + data[i+1]).lower().isprintable() == True and len(data[i-1]) % 2 == 0 and len(data[i+1]) % 2 ==1 or len(data[i-1]) % 2 == 1 and len(data[i+1]) % 2 == 0:
+      if data[i][0].isupper() == True and len(data[i-1]) % 2 == 0 and len(data[i+1]) % 2 ==1 or data[i][0].isupper() == True and len(data[i-1]) % 2 == 1 and len(data[i+1]) % 2 == 0:
             output.append((data[i-1] + " " + data[i] + " " + data[i+1]).lower()) 
       if len(output) >= 8:
           return output
