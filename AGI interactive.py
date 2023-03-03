@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.52
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.53
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -80,7 +80,7 @@ while(True):
                         ngramsC = getRandNGram(data) 
                         for word in convert(text):
                                     try:
-                                       if convert( ' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) >-1 < convert(' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) > -1:
+                                       if convert( ' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) >-1 < convert(' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) > -1 and ngramsB != ngramsC:
                                           output+= ( ' '.join(ngramsB) + " " + ' '.join(ngramsC) + " ")               
                                           ngramsB = getRandNGram(data)
                                           ngramsC = getRandNGram(data) 
