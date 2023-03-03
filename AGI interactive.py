@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.53
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.54
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -47,7 +47,7 @@ def gather(file,user):
     words = convert(user)
     sentences = text.split(token)
     for sentence in sentences:
-                    if statFind(sentence,words) > len(words)/8:
+                    if statFind(sentence,words) > len(words)/4:
                           output += sentence + token
     return output
 def getRandNGram(data):
@@ -58,7 +58,7 @@ def getRandNGram(data):
             output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
       if data[i][0].isupper() == True and ( data[i-1] + " " + data[i] + " " + data[i+1]).lower().isprintable() == True and len(data[i-1]) % 2 == 0 and len(data[i+1]) % 2 ==1 or len(data[i-1]) % 2 == 1 and len(data[i+1]) % 2 == 0:
             output.append((data[i-1] + " " + data[i] + " " + data[i+1]).lower()) 
-      if len(output) >= 4:
+      if len(output) >= 8:
           return output
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
