@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.55
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.65
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -31,12 +31,12 @@ tries = 25
 size = 50
 def convert(lst):
     return (lst.split())
-def statFind(sentence,arr):
+def statFind(sentenceA,sentenceB,arr,threshold):
       var = 0
       for word in arr:
          try:
-            if sentence.count(" " + word + " "):
-               var += 1
+            if sentenceA.find(" " + word + " ")< sentenceB.rfind(" " + word + " ")>threshold:
+               var += sentenceA.find(" " + word + " ") + sentenceB.find(" " + word + " ")
          except:
                False
       return var
@@ -45,20 +45,23 @@ def gather(file,user):
         text = f.read()
     output = ""
     words = convert(user)
-    sentences = text.split(token)
-    for sentence in sentences:
-                    if statFind(sentence,words) > len(words)/4:
-                          output += sentence + token
+    sentencesA= text.split(token)
+    sentencesB= text.split(token)
+    for threshold in reversed(range(100)):
+                 for word in words:
+                          sentenceA = sentencesA[ random.randint(0,len(sentencesA)-1)]
+                          sentenceB = sentencesB[ random.randint(0,len(sentencesB)-1)]
+                          if statFind(sentenceA,sentenceB,words,threshold) > threshold and len(sentenceA) > 25 and len(sentenceB) > 25 and sentenceA.find(word) > -1 and sentenceB.find(word) > -1:
+                                          output+= sentenceA + token 
+                                          output+= sentenceB + token 
     return output
 def getRandNGram(data):
    output = []
    while(True):
-      i = random.randint(3,len(data)-3)
-      if data[i][0].isupper() == False and len(data[i]) % 2 == 0 and len(data[i+2]) % 2 == 1 or data[i][0].isupper() == False and len(data[i]) % 2 == 1 and len(data[i+2]) % 2 == 0:
+      i = random.randint(3,len(data)-4)
+      if len(data[i]) % 2 == 0 and len(data[i+2]) % 2 == 1 or len(data[i]) % 2 == 1 and len(data[i+2]) % 2 == 0:
             output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
-      if data[i][0].isupper() == True and len(data[i-1]) % 2 == 0 and len(data[i+1]) % 2 ==1 or data[i][0].isupper() == True and len(data[i-1]) % 2 == 1 and len(data[i+1]) % 2 == 0:
-            output.append((data[i-1] + " " + data[i] + " " + data[i+1]).lower()) 
-      if len(output) >= 8:
+      if len(output) >= 4:
           return output
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
@@ -75,21 +78,10 @@ while(True):
                 data= convert(text)
                 output = ""
                 if len(text) > 0:
-                      for count in range(tries):               
-                        ngramsB = getRandNGram(data) 
-                        ngramsC = getRandNGram(data) 
-                        for word in convert(text):
-                                    try:
-                                       if convert( ' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) >-1 < convert(' '.join(ngramsB) + " " + ' '.join(ngramsC)).index(word) > -1 and ngramsB != ngramsC:
-                                          output+= ( ' '.join(ngramsB) + " " + ' '.join(ngramsC) + " ")               
-                                          ngramsB = getRandNGram(data)
-                                          ngramsC = getRandNGram(data) 
-                                    except:
-                                       False
-                                    if len(convert(output)) >= size:
-                                        break
-                        if len(convert(output)) >= size:
-                                        break
+                   for n in range(10):
+                      for word in convert(text)[:100]:
+                            if data.index(word,data.index(word)) - data.index(word) == n:
+                                  output += word + " "
                 if len(convert(output)) >= size:
                             print()
                             print("using " , file.strip() ,  " answering: " , user)
@@ -100,7 +92,7 @@ while(True):
                             f.write("\n")
                             f.write("using " + file.strip() + " answering: " + user)
                             f.write("\n")
-                            f.write(output)
+                            f.write("AI: " + output)
                             f.write("\n")
                             f.close()
                             if len(convert(output)) >= 1:
