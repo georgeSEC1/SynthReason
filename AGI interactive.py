@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.65
+# SynthReason - Synthetic Dawn - expert knowledge system - 1.66
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -27,42 +27,26 @@
 import random
 import re
 token = "."
-tries = 25
 size = 50
 def convert(lst):
     return (lst.split())
-def statFind(sentenceA,sentenceB,arr,threshold):
-      var = 0
-      for word in arr:
-         try:
-            if sentenceA.find(" " + word + " ")< sentenceB.rfind(" " + word + " ")>threshold:
-               var += sentenceA.find(" " + word + " ") + sentenceB.find(" " + word + " ")
-         except:
-               False
-      return var
 def gather(file,user):
     with open(file, encoding='ISO-8859-1') as f:
         text = f.read()
+    data = convert(text)
     output = ""
-    words = convert(user)
-    sentencesA= text.split(token)
-    sentencesB= text.split(token)
-    for threshold in reversed(range(100)):
-                 for word in words:
-                          sentenceA = sentencesA[ random.randint(0,len(sentencesA)-1)]
-                          sentenceB = sentencesB[ random.randint(0,len(sentencesB)-1)]
-                          if statFind(sentenceA,sentenceB,words,threshold) > threshold and len(sentenceA) > 25 and len(sentenceB) > 25 and sentenceA.find(word) > -1 and sentenceB.find(word) > -1:
-                                          output+= sentenceA + token 
-                                          output+= sentenceB + token 
+    wordlist = convert(user)
+    wordfreq = []
+    for w in wordlist:
+           wordfreq.append(data.count(w))
+    words = list(zip(wordlist, wordfreq))
+    res = sorted(words, key = lambda x: x[1]) 
+    sentences= text.split(token)
+    for word in res:
+          for sentence in sentences:
+                if sentence.find(" " + word[0] + " ") > -1:
+                      output += sentence + " "
     return output
-def getRandNGram(data):
-   output = []
-   while(True):
-      i = random.randint(3,len(data)-4)
-      if len(data[i]) % 2 == 0 and len(data[i+2]) % 2 == 1 or len(data[i]) % 2 == 1 and len(data[i+2]) % 2 == 0:
-            output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
-      if len(output) >= 4:
-          return output
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -78,10 +62,7 @@ while(True):
                 data= convert(text)
                 output = ""
                 if len(text) > 0:
-                   for n in range(10):
-                      for word in convert(text)[:100]:
-                            if data.index(word,data.index(word)) - data.index(word) == n:
-                                  output += word + " "
+                           output= ' '.join(data[:200])
                 if len(convert(output)) >= size:
                             print()
                             print("using " , file.strip() ,  " answering: " , user)
