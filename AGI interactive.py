@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.7
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.71
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -35,7 +35,7 @@ def statFind(sentence,arr):
       var = 0
       for word in arr:
          try:
-            if sentence.count(" " + word + " "):
+            if sentence.count(" " + word + " ") > 0:
                var += 1
          except:
                False
@@ -47,7 +47,7 @@ def gather(file,user):
     words = convert(user)
     sentences = text.split(token)
     for sentence in sentences:
-                    if statFind(sentence,words) > len(words)/8:
+                    if statFind(sentence,words) > len(words)/4:
                           output += sentence + token
     return output
 def getRandNGram(data):
