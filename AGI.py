@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.71
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.72
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -57,10 +57,10 @@ def getRandNGram(data):
       output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
       if len(output) == 1:
           return output
-def syllable_count(word):
+def syllable_count(mode,word):
     word = word.lower()
     count = 0
-    vowels = "aeiouy"
+    vowels = mode
     if word[0] in vowels:
         count += 1
     for index in range(1, len(word)):
@@ -86,15 +86,16 @@ for question in questions:
                 data= convert(text)
                 output = ""
                 if len(text) > 0:
+                    mode = 0
                     for word in range(tries):   
                         for word in convert (text):   
                                     ngramsA = getRandNGram(data)
                                     ngramsB = getRandNGram(data)
                                     try:
-                                      if syllable_count( (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 11 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):
+                                      if syllable_count(word, (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 7 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):
                                           output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
                                           ngramsA = getRandNGram(data)
-                                          ngramsB = getRandNGram(data)
+                                          ngramsB = getRandNGram(data)     
                                     except:
                                        False
                                     if len(convert(output)) >= size:
