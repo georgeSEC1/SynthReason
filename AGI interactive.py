@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - expert knowledge system - 1.66
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.7
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -27,26 +27,50 @@
 import random
 import re
 token = "."
+tries = 25
 size = 50
 def convert(lst):
     return (lst.split())
+def statFind(sentence,arr):
+      var = 0
+      for word in arr:
+         try:
+            if sentence.count(" " + word + " "):
+               var += 1
+         except:
+               False
+      return var
 def gather(file,user):
     with open(file, encoding='ISO-8859-1') as f:
         text = f.read()
-    data = convert(text)
     output = ""
-    wordlist = convert(user)
-    wordfreq = []
-    for w in wordlist:
-           wordfreq.append(data.count(w))
-    words = list(zip(wordlist, wordfreq))
-    res = sorted(words, key = lambda x: x[1]) 
-    sentences= text.split(token)
-    for word in res:
-          for sentence in sentences:
-                if sentence.find(" " + word[0] + " ") > -1:
-                      output += sentence + " "
+    words = convert(user)
+    sentences = text.split(token)
+    for sentence in sentences:
+                    if statFind(sentence,words) > len(words)/8:
+                          output += sentence + token
     return output
+def getRandNGram(data):
+   output = []
+   while(True):
+      i = random.randint(3,len(data)-3)
+      output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
+      if len(output) == 1:
+          return output
+def syllable_count(word):
+    word = word.lower()
+    count = 0
+    vowels = "aeiouy"
+    if word[0] in vowels:
+        count += 1
+    for index in range(1, len(word)):
+        if word[index] in vowels and word[index - 1] not in vowels:
+            count += 1
+    if word.endswith("e"):
+        count -= 1
+    if count == 0:
+        count += 1
+    return count
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -62,7 +86,21 @@ while(True):
                 data= convert(text)
                 output = ""
                 if len(text) > 0:
-                           output= ' '.join(data[:200])
+                    for word in range(tries):   
+                        for word in convert (text):   
+                                    ngramsA = getRandNGram(data)
+                                    ngramsB = getRandNGram(data)
+                                    try:
+                                      if syllable_count( (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 11 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):
+                                          output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
+                                          ngramsA = getRandNGram(data)
+                                          ngramsB = getRandNGram(data)
+                                    except:
+                                       False
+                                    if len(convert(output)) >= size:
+                                        break
+                        if len(convert(output)) >= size:
+                                        break
                 if len(convert(output)) >= size:
                             print()
                             print("using " , file.strip() ,  " answering: " , user)
@@ -73,7 +111,7 @@ while(True):
                             f.write("\n")
                             f.write("using " + file.strip() + " answering: " + user)
                             f.write("\n")
-                            f.write("AI: " + output)
+                            f.write(output)
                             f.write("\n")
                             f.close()
                             if len(convert(output)) >= 1:
