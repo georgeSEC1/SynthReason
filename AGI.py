@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.76
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.77
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -79,7 +79,7 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
 for question in questions:
-          user = re.sub('\W+',' ',question)
+          user = re.sub('\W+',' ',question.lower())
           random.shuffle(files)  
           for file in files:
                 text = gather(file.strip(),user)
