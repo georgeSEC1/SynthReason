@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.75
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.76
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -28,7 +28,7 @@ import random
 import re
 token = "."
 tries = 25
-size = 50
+size = 75
 def convert(lst):
     return (lst.split())
 def statFind(sentence,arr):
@@ -87,12 +87,12 @@ while(True):
                 output = ""
                 if len(text) > 0:
                     mode = 0
-                    for word in range(tries):   
+                    for i in range(tries):   
                         for word in convert (text):   
                                     ngramsA = getRandNGram(data)
                                     ngramsB = getRandNGram(data)
                                     try:
-                                      if syllable_count(word, (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").count(word)and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):
+                                      if syllable_count(word, (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == (' '.join(ngramsA)).count(word) and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):   
                                           output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
                                           ngramsA = getRandNGram(data)
                                           ngramsB = getRandNGram(data)     
@@ -105,7 +105,7 @@ while(True):
                 if len(convert(output)) >= size:
                             print()
                             print("using " , file.strip() ,  " answering: " , user)
-                            print("AI:" ,output)
+                            print("AI:" , re.sub('\W+',' ',output))
                             print()
                             print()
                             f = open(filename, "a", encoding="utf8")
