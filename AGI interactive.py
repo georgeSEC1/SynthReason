@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.8
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.81
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -103,9 +103,10 @@ while(True):
                         if len(convert(output)) >= size:
                                         break
                 if len(convert(output)) >= size:
+                            output = re.sub('\W+',' ',output)
                             print()
                             print("using " , file.strip() ,  " answering: " , user)
-                            print("AI:" , re.sub('\W+',' ',output))
+                            print("AI:" , output)
                             print()
                             print()
                             f = open(filename, "a", encoding="utf8")
