@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.72
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.73
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -92,7 +92,7 @@ while(True):
                                     ngramsA = getRandNGram(data)
                                     ngramsB = getRandNGram(data)
                                     try:
-                                      if syllable_count(word, (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 7 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):
+                                      if syllable_count(word, (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 9 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):
                                           output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
                                           ngramsA = getRandNGram(data)
                                           ngramsB = getRandNGram(data)     
