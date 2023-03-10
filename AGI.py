@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.71
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.92
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -26,9 +26,10 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
 import re
+import numpy as np
 token = "."
 tries = 25
-size = 50
+size = 75
 def convert(lst):
     return (lst.split())
 def statFind(sentence,arr):
@@ -50,17 +51,16 @@ def gather(file,user):
                     if statFind(sentence,words) > len(words)/4:
                           output += sentence + token
     return output
-def getRandNGram(data):
-   output = []
-   while(True):
-      i = random.randint(3,len(data)-3)
+def getRandNGram(data,i):
+      output = []
+      i = round(i)
       output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
       if len(output) == 1:
           return output
-def syllable_count(word):
+def syllable_count(mode,word):
     word = word.lower()
     count = 0
-    vowels = "aeiouy"
+    vowels = mode
     if word[0] in vowels:
         count += 1
     for index in range(1, len(word)):
@@ -79,32 +79,36 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
 for question in questions:
-          user = re.sub('\W+',' ',question)
+          user = re.sub('\W+',' ',question.lower())
           random.shuffle(files)  
           for file in files:
                 text = gather(file.strip(),user)
                 data= convert(text)
                 output = ""
                 if len(text) > 0:
-                    for word in range(tries):   
-                        for word in convert (text):   
-                                    ngramsA = getRandNGram(data)
-                                    ngramsB = getRandNGram(data)
-                                    try:
-                                      if syllable_count( (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 11 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(word):
-                                          output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
-                                          ngramsA = getRandNGram(data)
-                                          ngramsB = getRandNGram(data)
-                                    except:
-                                       False
-                                    if len(convert(output)) >= size:
-                                        break
-                        if len(convert(output)) >= size:
-                                        break
-                if len(convert(output)) >= size:
+                    for i in range(tries):
+                          if len(convert(output)) >= size:
+                              break
+                          rand = np.random.default_rng().uniform(0,len(data)-3,10000)
+                          for word in convert (text):
+                                 if len(convert(output)) >= size:
+                                      	break
+                                 for i in rand[::13]:
+                                 		if len(convert(output)) >= size:
+                                 			break
+                                 		try:
+                                	 		ngramsA = getRandNGram(data,i)
+                        	         		ngramsB = getRandNGram(data,i+4)
+                        	         		if syllable_count(user, (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) ==  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " " + output ).count(word) and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB)).rfind(word):
+                        	         		       output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")
+                        	         		       ngramsA = getRandNGram(data,i+8)
+                        	         		       ngramsB = getRandNGram(data,i+12)
+                                 		except:
+                                 			False
+                    if len(convert(output)) >= size:
                             print()
                             print("using " , file.strip() ,  " answering: " , user)
-                            print("AI:" ,output)
+                            print("AI:" , output)
                             print()
                             print()
                             f = open(filename, "a", encoding="utf8")
@@ -114,5 +118,5 @@ for question in questions:
                             f.write(output)
                             f.write("\n")
                             f.close()
-                            if len(convert(output)) >= 1:
+                            if len(convert(output)) >= size:
                                 break
