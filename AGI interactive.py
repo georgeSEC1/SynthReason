@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.93
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.95
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -27,6 +27,7 @@
 import random
 import re
 import numpy as np
+import math
 token = "."
 tries = 25
 size = 75
@@ -79,18 +80,18 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
 while(True):
-          user = re.sub('\W+',' ',input("USER: ").lower())
+          user_input = re.sub('\W+',' ',input("USER: " ).lower())
           random.shuffle(files)  
           for file in files:
-                text = gather(file.strip(),user)
-                data= convert(text)
+                input_text = gather(file.strip(),user_input)
+                data= convert(input_text)
                 output = ""
-                if len(text) > 0:
+                if len(input_text) > 0:
                     for i in range(tries):
                           if len(convert(output)) >= size:
                               break
                           rand = np.random.default_rng().uniform(0,len(data)-3,10000)
-                          for word in convert (text):
+                          for target_word in convert (input_text):
                                  if len(convert(output)) >= size:
                                       	break
                                  for i in rand[::13]:
@@ -99,21 +100,27 @@ while(True):
                                  		try:
                                 	 		ngramsA = getRandNGram(data,i)
                         	         		ngramsB = getRandNGram(data,i+4)
-                        	         		if syllable_count(user, (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) ==  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " " + output ).count(word) and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(word) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB)).rfind(word):
-                        	         		       output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")
+                        	         		ngrams_str = ' '.join(ngramsA) + " " + ' '.join(ngramsB) + " "
+                        	         		syllables_matching_word_countA = syllable_count(user_input, ngrams_str)
+                        	         		syllables_matching_word_countB = syllable_count(target_word,user_input)
+                        	         		word_occurrence_count = ngrams_str.count(target_word)
+                        	         		word_index = ngrams_str.find(target_word),
+                        	         		if syllables_matching_word_countA+syllables_matching_word_countB >  syllables_matching_word_countB and math.sqrt(syllables_matching_word_countA * syllables_matching_word_countB)  < ngrams_str.rfind(target_word):
+                        	         		       output+= ngrams_str
                         	         		       ngramsA = getRandNGram(data,i+8)
                         	         		       ngramsB = getRandNGram(data,i+12)
+                        	         		       
                                  		except:
                                  			False
                     if len(convert(output)) >= size:
                             print()
-                            print("using " , file.strip() ,  " answering: " , user)
+                            print("using " , file.strip() ,  " answering: " , user_input)
                             print("AI:" , output)
                             print()
                             print()
                             f = open(filename, "a", encoding="utf8")
                             f.write("\n")
-                            f.write("using " + file.strip() + " answering: " + user)
+                            f.write("using " + file.strip() + " answering: " + user_input)
                             f.write("\n")
                             f.write(output)
                             f.write("\n")
