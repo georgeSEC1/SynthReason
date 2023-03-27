@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 1.95
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 3.5
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -26,19 +26,18 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
 import re
-import numpy as np
-import math
 token = "."
+size = 125
 tries = 25
-size = 75
 def convert(lst):
     return (lst.split())
 def statFind(sentence,arr):
       var = 0
       for word in arr:
          try:
-            if sentence.count(" " + word + " ") > 0:
+            if sentence.count(" " + word + " ") > 1:
                var += 1
+               count += 1
          except:
                False
       return var
@@ -47,31 +46,12 @@ def gather(file,user):
         text = f.read()
     output = ""
     words = convert(user)
-    sentences = text.split(token)
-    for sentence in sentences:
-                    if statFind(sentence,words) > len(words)/4:
-                          output += sentence + token
+    for word in words:
+        sentences = text.split(token)
+        for i in range(len(sentences)-2):
+                          if statFind(sentences[i],words) > len(words)/8:
+                              output += sentences[i] + token
     return output
-def getRandNGram(data,i):
-      output = []
-      i = round(i)
-      output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
-      if len(output) == 1:
-          return output
-def syllable_count(mode,word):
-    word = word.lower()
-    count = 0
-    vowels = mode
-    if word[0] in vowels:
-        count += 1
-    for index in range(1, len(word)):
-        if word[index] in vowels and word[index - 1] not in vowels:
-            count += 1
-    if word.endswith("e"):
-        count -= 1
-    if count == 0:
-        count += 1
-    return count
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
 print("SynthReason - Synthetic Dawn")
@@ -80,50 +60,36 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
 for question in questions:
-          user_input = re.sub('\W+',' ',question.lower())
-          random.shuffle(files)  
+          user = re.sub('\W+',' ',question)
+          random.shuffle(files) 
+          output = ""
           for file in files:
-                input_text = gather(file.strip(),user_input)
-                data= convert(input_text)
-                output = ""
-                if len(input_text) > 0:
-                    for i in range(tries):
-                          if len(convert(output)) >= size:
-                              break
-                          rand = np.random.default_rng().uniform(0,len(data)-3,10000)
-                          for target_word in convert (input_text):
-                                 if len(convert(output)) >= size:
-                                      	break
-                                 for i in rand[::13]:
-                                 		if len(convert(output)) >= size:
-                                 			break
-                                 		try:
-                                	 		ngramsA = getRandNGram(data,i)
-                        	         		ngramsB = getRandNGram(data,i+4)
-                        	         		ngrams_str = ' '.join(ngramsA) + " " + ' '.join(ngramsB) + " "
-                        	         		syllables_matching_word_countA = syllable_count(user_input, ngrams_str)
-                        	         		syllables_matching_word_countB = syllable_count(target_word,user_input)
-                        	         		word_occurrence_count = ngrams_str.count(target_word)
-                        	         		word_index = ngrams_str.find(target_word),
-                        	         		if syllables_matching_word_countA+syllables_matching_word_countB >  syllables_matching_word_countB and math.sqrt(syllables_matching_word_countA * syllables_matching_word_countB)  < ngrams_str.rfind(target_word):
-                        	         		       output+= ngrams_str
-                        	         		       ngramsA = getRandNGram(data,i+8)
-                        	         		       ngramsB = getRandNGram(data,i+12)
-                        	         		       
-                                 		except:
-                                 			False
-                    if len(convert(output)) >= size:
+                text = gather(file.strip(),user)
+                if len(text) > 0:
+                    for j in range(tries):
+                    	for words in text.split(token):
+                    	  	words = convert(words)
+                    	  	symploces = []
+                    	  	for i in range(len(words)-10):
+                    	  			if words[i].isalpha() and words[i+1].isalpha() and words[i+2].isalpha():
+                    	  				if words[i].lower() == words[i+3].lower():
+                    	  				     string = words[i] + " " + words[i+1]+ " " + words[i+2]
+                    	  				     if output.find(string) == -1 and ' '.join(words).find(string) > -1:
+                    	  				         output += string + " "
+                    	if len(output)>= size:
+                    	    break                  	    
+                if len(output)>= size: 
                             print()
-                            print("using " , file.strip() ,  " answering: " , user_input)
-                            print("AI:" , output)
+                            print("using " , file.strip() ,  " answering: " , user)                            
+                            print("AI:" ,output)
                             print()
                             print()
                             f = open(filename, "a", encoding="utf8")
                             f.write("\n")
-                            f.write("using " + file.strip() + " answering: " + user_input)
+                            f.write("using " + file.strip() + " answering: " + user)
                             f.write("\n")
                             f.write(output)
                             f.write("\n")
                             f.close()
-                            if len(convert(output)) >= size:
+                            if len(output) >= 1:
                                 break
