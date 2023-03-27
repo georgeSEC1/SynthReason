@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 3.5
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 3.6
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -26,6 +26,7 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
 import re
+import wikipedia
 token = "."
 size = 125
 tries = 25
@@ -41,19 +42,17 @@ def statFind(sentence,arr):
          except:
                False
       return var
-def gather(file,user):
-    with open(file, encoding='ISO-8859-1') as f:
-        text = f.read()
+def gather(user):
     output = ""
     words = convert(user)
     for word in words:
-        sentences = text.split(token)
-        for i in range(len(sentences)-2):
-                          if statFind(sentences[i],words) > len(words)/8:
-                              output += sentences[i] + token
-    return output
-with open("fileList.conf", encoding='ISO-8859-1') as f:
-    files = f.readlines()
+        try:
+            string =  wikipedia.search(word)
+            data = wikipedia.page(string[random.randint(0,len(string)-1)])
+            output += data.content
+        except:
+            False
+    return output     
 print("SynthReason - Synthetic Dawn")
 with open("questions.conf", encoding='ISO-8859-1') as f:
 	questions = f.readlines()
@@ -61,35 +60,31 @@ filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
 for question in questions:
           user = re.sub('\W+',' ',question)
-          random.shuffle(files) 
+          text = gather(user)
           output = ""
-          for file in files:
-                text = gather(file.strip(),user)
-                if len(text) > 0:
+          if len(text) > 0:
                     for j in range(tries):
                     	for words in text.split(token):
                     	  	words = convert(words)
                     	  	symploces = []
                     	  	for i in range(len(words)-10):
-                    	  			if words[i].isalpha() and words[i+1].isalpha() and words[i+2].isalpha():
-                    	  				if words[i].lower() == words[i+3].lower():
-                    	  				     string = words[i] + " " + words[i+1]+ " " + words[i+2]
-                    	  				     if output.find(string) == -1 and ' '.join(words).find(string) > -1:
-                    	  				         output += string + " "
+                    	      		if words[i].isalpha() and words[i+1].isalpha() and words[i+2].isalpha():
+                    	      		   if words[i].lower() == words[i+4].lower():
+                    	      		       string = words[i] + " " + words[i+1]+ " " + words[i+2]+ " " + words[i+3]
+                    	      		       if output.find(string) == -1 :
+                    	      		           output += string + " "
                     	if len(output)>= size:
-                    	    break                  	    
-                if len(output)>= size: 
+                    	    break
+          if len(output)>= size: 
                             print()
-                            print("using " , file.strip() ,  " answering: " , user)                            
+                            print(" answering: " , user)                            
                             print("AI:" ,output)
                             print()
                             print()
                             f = open(filename, "a", encoding="utf8")
                             f.write("\n")
-                            f.write("using " + file.strip() + " answering: " + user)
+                            f.write( " answering: " + user)
                             f.write("\n")
                             f.write(output)
                             f.write("\n")
                             f.close()
-                            if len(output) >= 1:
-                                break
