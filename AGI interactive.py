@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 3.6
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 3.0
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -26,33 +26,53 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
 import re
-import wikipedia
 token = "."
-size = 125
-tries = 25
+tries = 50
+size = 50
 def convert(lst):
     return (lst.split())
 def statFind(sentence,arr):
       var = 0
       for word in arr:
          try:
-            if sentence.count(" " + word + " ") > 1:
+            if sentence.count(" " + word + " ") > 0:
                var += 1
-               count += 1
          except:
                False
       return var
-def gather(user):
+def gather(file,user):
+    with open(file, encoding='ISO-8859-1') as f:
+        text = f.read()
     output = ""
     words = convert(user)
-    for word in words:
-        try:
-            string =  wikipedia.search(word)
-            data = wikipedia.page(string[random.randint(0,len(string)-1)])
-            output += data.content
-        except:
-            False
+    sentences = text.split(token)
+    for sentence in sentences:
+                    if statFind(sentence,words) > len(words)/4:
+                          output += sentence + token
     return output
+def getRandNGram(data):
+   output = []
+   while(True):
+      i = random.randint(3,len(data)-3)
+      output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
+      if len(output) == 1:
+          return output
+def syllable_count(word):
+    word = word.lower()
+    count = 0
+    vowels = "aeiouy"
+    if word[0] in vowels:
+        count += 1
+    for index in range(1, len(word)):
+        if word[index] in vowels and word[index - 1] not in vowels:
+            count += 1
+    if word.endswith("e"):
+        count -= 1
+    if count == 0:
+        count += 1
+    return count
+with open("fileList.conf", encoding='ISO-8859-1') as f:
+    files = f.readlines()
 print("SynthReason - Synthetic Dawn")
 with open("questions.conf", encoding='ISO-8859-1') as f:
 	questions = f.readlines()
@@ -60,31 +80,39 @@ filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
 while(True):
           user = re.sub('\W+',' ',input("USER: "))
-          text = gather(user)
-          output = ""
-          if len(text) > 0:
-                    for j in range(tries):
-                    	for words in text.split(token):
-                    	  	words = convert(words)
-                    	  	symploces = []
-                    	  	for i in range(len(words)-10):
-                    	      		if words[i].isalpha() and words[i+1].isalpha() and words[i+2].isalpha():
-                    	      		   if words[i].lower() == words[i+4].lower():
-                    	      		       string = words[i] + " " + words[i+1]+ " " + words[i+2]+ " " + words[i+3]
-                    	      		       if output.find(string) == -1 :
-                    	      		           output += string + " "
-                    	if len(output)>= size:
-                    	    break
-          if len(output)>= size: 
+          random.shuffle(files)  
+          for file in files:
+                text = gather(file.strip(),user)
+                data= convert(text)
+                output = ""
+                if len(text) > 0:
+                    for word in range(tries):   
+                        for i in range(len(data)):
+                                    ngramsA = getRandNGram(data)
+                                    ngramsB = getRandNGram(data)
+                                    try:
+                                      if syllable_count( (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 11 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(data[i]) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(data[i]) and data[i] == data[i+4]:
+                                          output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
+                                          ngramsA = getRandNGram(data)
+                                          ngramsB = getRandNGram(data)
+                                    except:
+                                       False
+                                    if len(convert(output)) >= size:
+                                        break
+                        if len(convert(output)) >= size:
+                                        break
+                if len(convert(output)) >= size:
                             print()
-                            print(" answering: " , user)                            
+                            print("using " , file.strip() ,  " answering: " , user)
                             print("AI:" ,output)
                             print()
                             print()
                             f = open(filename, "a", encoding="utf8")
                             f.write("\n")
-                            f.write( " answering: " + user)
+                            f.write("using " + file.strip() + " answering: " + user)
                             f.write("\n")
                             f.write(output)
                             f.write("\n")
                             f.close()
+                            if len(convert(output)) >= 1:
+                                break
