@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 4.4
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 4.5
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -62,14 +62,12 @@ def syllable_count(word):
     count = 0
     vowels = "aeiouy"
     if word[0] in vowels:
-        count += 1
+        count *= 2
     for index in range(1, len(word)):
-        if word[index] in vowels and word[index - 1] not in vowels:
+        if word[index] not in vowels and word[index - 1] not in vowels:
             count += 1
     if word.endswith("e"):
         count -= 1
-    if count == 0:
-        count += 1
     return count
 with open("fileList.conf", encoding='ISO-8859-1') as f:
     files = f.readlines()
