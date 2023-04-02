@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 4.2
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 4.3
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -90,7 +90,7 @@ for question in questions:
                         for i in range(len(data)):
                                     ngramsA = getRandNGram(data)
                                     try:
-                                      if convert(' '.join(ngramsA))[0] == data[i+syllable_count(' '.join(ngramsA) )]:
+                                      if convert(' '.join(ngramsA))[1] == data[i+syllable_count(' '.join(ngramsA) )]:
                                           output+= (' '.join(ngramsA)+ " ")
                                     except:
                                        False
