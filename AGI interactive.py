@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 3.0
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 3.2
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -35,7 +35,7 @@ def statFind(sentence,arr):
       var = 0
       for word in arr:
          try:
-            if sentence.count(" " + word + " ") > 0:
+            if sentence.count(" " + word + " ") > 1:
                var += 1
          except:
                False
@@ -89,12 +89,9 @@ while(True):
                     for word in range(tries):   
                         for i in range(len(data)):
                                     ngramsA = getRandNGram(data)
-                                    ngramsB = getRandNGram(data)
                                     try:
-                                      if syllable_count( (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")) == 11 and  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").find(data[i]) <  (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ").rfind(data[i]) and data[i] == data[i+4]:
-                                          output+= (' '.join(ngramsA) + " " + ' '.join(ngramsB) + " ")               
-                                          ngramsA = getRandNGram(data)
-                                          ngramsB = getRandNGram(data)
+                                      if syllable_count(' '.join(ngramsA) )== 6 and convert(' '.join(ngramsA))[0] == data[i+4]:
+                                          output+= (' '.join(ngramsA)+ " ")
                                     except:
                                        False
                                     if len(convert(output)) >= size:
