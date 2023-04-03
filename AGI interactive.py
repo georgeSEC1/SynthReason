@@ -27,7 +27,7 @@
 import random
 import re
 import numpy as np
-token = "."
+token = " of the "
 tries = 1500
 size = 100
 def convert(lst):
@@ -83,7 +83,7 @@ while(True):
     for file in files:
         text = gather(file.strip(),user)
         data= convert(text)
-        procA = np.arange(start=1, stop=3000, step=2)
+        procA = np.arange(start=1, stop=3000, step=3)
         procB = np.arange(start=1, stop=2000, step=1)
         result = np.convolve(procB, procA)
         output = ""
