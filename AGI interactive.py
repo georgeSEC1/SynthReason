@@ -1,4 +1,4 @@
-# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 4.6
+# SynthReason - Synthetic Dawn - AGI - intelligent symbolic manipulation system - 4.7
 # BSD 2-Clause License
 # 
 # Copyright (c) 2023, GeorgeSEC1 - George Wagenknecht
@@ -27,7 +27,7 @@
 import random
 import re
 import numpy as np
-token = " of the "
+token = " a "
 tries = 1500
 size = 100
 def convert(lst):
