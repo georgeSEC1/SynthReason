@@ -26,20 +26,21 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
 import re
-token = " of the "
+import numpy as np
+token = "."
 tries = 1500
-size = 1500
+size = 100
 def convert(lst):
     return (lst.split())
 def statFind(sentence,arr):
-      var = 0
-      for word in arr:
-         try:
-            if sentence.count(" " + word + " ") > 1:
-               var += 1
-         except:
-               False
-      return var
+    var = 0
+    for word in arr:
+       try:
+          if sentence.count(" " + word + " ") > 1:
+             var += 1
+       except:
+             False
+    return var
 def gather(file,user):
     with open(file, encoding='ISO-8859-1') as f:
         text = f.read()
@@ -47,16 +48,16 @@ def gather(file,user):
     words = convert(user)
     sentences = text.split(token)
     for sentence in sentences:
-                    if statFind(sentence,words) > len(words)/4:
-                          output += sentence + token
+        if statFind(sentence,words) > len(words)/8:
+              output += sentence + token
     return output
 def getRandNGram(data):
    output = []
    while(True):
-      i = random.randint(3,len(data)-3)
-      output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
-      if len(output) == 1:
-          return output
+        i = random.randint(3,len(data)-3)
+        output.append((data[i] + " " + data[i+1] + " " + data[i+2]).lower())
+        if len(output) == 1:
+            return output
 def syllable_count(word):
     word = word.lower()
     count = 0
@@ -77,37 +78,40 @@ with open("questions.conf", encoding='ISO-8859-1') as f:
 filename = "Compendium#" + str(random.randint(0,10000000)) + ".txt"
 random.shuffle(questions)
 for question in questions:
-          user = re.sub('\W+',' ',question)
-          random.shuffle(files)  
-          for file in files:
-                text = gather(file.strip(),user)
-                data= convert(text)
-                output = ""
-                if len(text) > 0:
-                    for word in range(tries):   
-                        for i in range(len(data)):
-                                    ngramsA = getRandNGram(data)
-                                    try:
-                                      if convert(' '.join(ngramsA))[2] == data[i+syllable_count(' '.join(ngramsA) )]:
-                                          output+= (' '.join(ngramsA)+ " ")
-                                    except:
-                                       False
-                                    if len(convert(output)) >= size:
-                                        break
-                        if len(convert(output)) >= size:
-                                        break
+    user = re.sub('\W+',' ',question)
+    random.shuffle(files)  
+    for file in files:
+        text = gather(file.strip(),user)
+        data= convert(text)
+        procA = np.arange(start=1, stop=3000, step=2)
+        procB = np.arange(start=1, stop=2000, step=1)
+        result = np.convolve(procB, procA)
+        output = ""
+        if len(text) > 0:
+            for word in range(tries):   
+                for i in result:
+                    ngramsA = getRandNGram(data)
+                    try:
+                        if convert(' '.join(ngramsA))[2] == data[round(i)+syllable_count(' '.join(ngramsA) )]:
+                            output+= (' '.join(ngramsA)+ " ")
+                    except:
+                        False
+                    if len(convert(output)) >= size:
+                        break
                 if len(convert(output)) >= size:
-                            print()
-                            print("using " , file.strip() ,  " answering: " , user)
-                            print("AI:" ,output)
-                            print()
-                            print()
-                            f = open(filename, "a", encoding="utf8")
-                            f.write("\n")
-                            f.write("using " + file.strip() + " answering: " + user)
-                            f.write("\n")
-                            f.write(output)
-                            f.write("\n")
-                            f.close()
-                            if len(convert(output)) >= 1:
                                 break
+        if len(convert(output)) >= size:
+                    print()
+                    print("using " , file.strip() ,  " answering: " , user)
+                    print("AI:" ,output)
+                    print()
+                    print()
+                    f = open(filename, "a", encoding="utf8")
+                    f.write("\n")
+                    f.write("using " + file.strip() + " answering: " + user)
+                    f.write("\n")
+                    f.write(output)
+                    f.write("\n")
+                    f.close()
+                    if len(convert(output)) >= 1:
+                        break
