@@ -26,9 +26,9 @@
 # OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 import random
 import re
-token = "."
-tries = 50
-size = 50
+token = " of the "
+tries = 1500
+size = 1500
 def convert(lst):
     return (lst.split())
 def statFind(sentence,arr):
